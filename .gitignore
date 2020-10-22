@@ -1,0 +1,5 @@
+data/*
+.ipynb_checkpoints/*
+__pycache__/*
+raw/ABCD2p0NDA/*
+raw/derivatives/*
