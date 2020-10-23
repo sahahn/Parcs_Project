@@ -3,5 +3,6 @@ data/*
 __pycache__/*
 raw/nda_rds_201.csv
 raw/derivatives/*
+Job_Logs/*
 
 *.ipynb

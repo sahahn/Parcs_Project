@@ -1,0 +1,15 @@
+#!/bin/sh
+#SBATCH --partition=bluemoon
+#SBATCH --time=5:00:00
+#SBATCH --mem-per-cpu=2G
+#SBATCH --job-name=process
+#SBATCH --output=Job_Logs/%x_%j.out
+#SBATCH --error=Job_Logs/%x_%j.err
+#SBATCH -n 32
+
+cd ${SLURM_SUBMIT_DIR}
+
+# Process all
+python process_parcs.py
+python process_targets.py
+python process_derivatives.py

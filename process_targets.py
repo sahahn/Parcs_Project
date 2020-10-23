@@ -44,6 +44,10 @@ def main():
     'neighb_phenx_ss_mean_p'
     ])
 
+    # Fix weird categories
+    data['ksads_back_c_mh_sa_p'] =\
+        data['ksads_back_c_mh_sa_p'].replace({'Yes': 1, 'Not sure': np.nan}).astype('float')
+
     # Add some composites for sports activity
     sp = 'sports_activity_activities_p___'
 

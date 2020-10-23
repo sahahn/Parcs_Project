@@ -60,7 +60,7 @@ def resave_data():
         
         # Get all files
         files = glob.glob(base + stub)
-        Parallel(n_jobs=16)(delayed(resave)(file) for file in files)
+        Parallel(n_jobs=32)(delayed(resave)(file) for file in files)
 
 def main():
 
