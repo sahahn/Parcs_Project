@@ -1,7 +1,7 @@
 data/*
 .ipynb_checkpoints/*
 __pycache__/*
-raw/ABCD2p0NDA/*
+raw/nda_rds_201.csv
 raw/derivatives/*
 
 *.ipynb
