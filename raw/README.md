@@ -29,14 +29,9 @@ Due to data use agreements, this folder and the data within cannot be shared her
 
 -----------------
 
-### ABCD2p0NDA/
+### nda_rds_201.csv
 
-This folder represents the ABCD 2.0 currated tabular data release, see: 
-https://nda.nih.gov/abcd/query/abcd-curated-annual-release-2.0.html
-
-Folder paths ex:
-- raw/ABCD2p0NDA/abcd_betnet02.txt
-
+This folder represents the DEAP rds version 2.0.1 as converted to a csv.
 Due to data use agreements, this folder and the data within cannot be shared here.
 
 ----------------
