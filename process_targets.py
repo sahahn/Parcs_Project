@@ -1,4 +1,6 @@
 import pandas as pd
+import os
+import numpy as np
 
 def load_from_rds(names):
     
@@ -26,7 +28,6 @@ def main():
     'devhx_12a_born_premature_p',
     'devhx_6_pregnancy_planned_p',
     'devhx_20_motor_dev_p',
-    'bpmt_ss_totalprob_mean',
     'demo_prnt_age_p',
     'cbcl_scr_syn_rulebreak_r',
     'lmt_scr_perc_correct',
@@ -41,7 +42,8 @@ def main():
     'ksads_back_c_det_susp_p',
     'ksads_back_c_mh_sa_p',
     'married.bl',
-    'neighb_phenx_ss_mean_p'
+    'neighb_phenx_ss_mean_p',
+    'rel_family_id'
     ])
 
     # Fix weird categories
@@ -61,11 +63,11 @@ def main():
 
     # Load base variables to binarize
     to_binary = load_from_rds(['devhx_15_days_incubator_p',
-                            'asr_scr_thought_r',
-                            'cbcl_scr_syn_aggressive_r',
-                            'devhx_18_mnths_breast_fed_p',
-                            'prodrom_psych_ss_severity_score',
-                            'sleep_ss_total_p'])
+                               'asr_scr_thought_r',
+                               'cbcl_scr_syn_aggressive_r',
+                               'devhx_18_mnths_breast_fed_p',
+                               'prodrom_psych_ss_severity_score',
+                               'sleep_ss_total_p'])
 
     # Add the different composites to binarize
 
@@ -157,6 +159,7 @@ def main():
     data = data.merge(to_binary, on='src_subject_id', how='outer')
 
     # Save as csv for future use
+    os.makedirs('data/', exist_ok=True)
     data.to_csv('data/targets.csv')
 
 if __name__ == "__main__":
