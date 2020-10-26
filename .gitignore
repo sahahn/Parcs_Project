@@ -4,5 +4,6 @@ __pycache__/*
 raw/nda_rds_201.csv
 raw/derivatives/*
 Job_Logs/*
+setup_ML_Logs/*
 
 *.ipynb

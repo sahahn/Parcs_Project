@@ -85,8 +85,9 @@ ML.Load_Data_Files(df=df[['curv']],
                    reduce_func=[np.min, np.max, np.std])
 
 # Save distribution videos
+'''
 for name, func in zip(['Mean', 'Abs. Mean', 'Min', 'Max', 'STD'],
-                      [np.mean, abs_mean, np.min, np.max, np.std]):
+                    [np.mean, abs_mean, np.min, np.max, np.std]):
 
     anim = ML.Show_Data_Dist(reduce_func=func, return_anim=True)
     plt.title(name)
@@ -96,6 +97,7 @@ for name, func in zip(['Mean', 'Abs. Mean', 'Min', 'Max', 'STD'],
 
     save_loc = 'setup_ML_Logs/' + name + '.mp4'
     anim.save(save_loc, dpi=500, writer=writer)
+'''
 
 # Set to no test data
 ML.Train_Test_Split(test_size=0)
@@ -107,7 +109,7 @@ ML.Set_Default_ML_Verbosity(pipeline_verbose=True,
                             time_per_fold=True,
                             score_per_fold=True,
                             fold_sizes=True,
-                            best_param=True)
+                            best_params=True)
 
 # Save ML object
 ML.Save('data/Base.ML', low_memory=True)
