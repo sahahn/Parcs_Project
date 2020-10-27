@@ -9,7 +9,7 @@ from BPt import BPt_ML
 def get_datafiles_df():
     
     df = pd.DataFrame()
-    dr = 'data/abcd_structural/'
+    dr = os.path.join(os.getcwd(), 'data/abcd_structural/')
     modals = os.listdir(dr)
 
     for modal in modals:
