@@ -1,8 +1,9 @@
+# sinfo -o"%P %C %c %m" -e
 import os
 from joblib import parallel_backend
 
 from helpers import unpack_args
-from setup_dask import setup_dask
+from setup_dask import setup_ib
 from submit import evaluate
 
 # Base Params
@@ -15,7 +16,7 @@ n_jobs = int(cores * scale)
 args = unpack_args()
 
 # Setup dask
-client, dask_ip = setup_dask(args['name'], cores, memory, scale)
+client, dask_ip = setup_ib(args['name'], cores, memory, scale)
 
 # Wait up to an hour lets say - for dask to connect before starting
 with parallel_backend('dask', wait_for_workers_timeout=3600):
@@ -23,7 +24,7 @@ with parallel_backend('dask', wait_for_workers_timeout=3600):
     # Run evaluate
     evaluate(args, n_jobs, dask_ip=dask_ip)
 
-print('dask_submit finished, starting new job.', flush=True)
+client.close()
+print('ib_submit finished, starting new job.', flush=True)
 
-# Try Submit new job
-os.system('python run.py')
+os.system('python run.py ib')

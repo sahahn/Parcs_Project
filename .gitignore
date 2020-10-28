@@ -3,8 +3,7 @@ data
 __pycache__
 raw/nda_rds_201.csv
 raw/derivatives/*
-Job_Logs/*
-
+Job_Logs
 *.ipynb
 setup_ML_Logs/My_Exp/test_subjects.txt
 setup_ML_Logs/My_Exp/train_subjects.txt

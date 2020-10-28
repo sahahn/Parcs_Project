@@ -3,7 +3,7 @@ import numpy as np
 import pandas as pd
 import time
 import random
-
+import sys
 
 def get_done(results_dr):
 
@@ -27,7 +27,7 @@ def get_done(results_dr):
 
 def get_name(parcel, model, target):
 
-    name = parcel + '-' + model + '-' + target
+    name = parcel + '---' + model + '---' + target
     return name
 
 def get_choice(dr):
@@ -40,8 +40,9 @@ def get_choice(dr):
     data_dr = os.path.join(dr, 'data')
     targets_loc = os.path.join(data_dr, 'targets.csv')
     targets = list(pd.read_csv(targets_loc,
-                            index_col='src_subject_id',
-                            nrows=0))
+                               index_col='src_subject_id',
+                               nrows=0))
+    targets.remove('rel_family_id') # Not a target
 
     # Models
     models = ['elastic', 'lgbm']
@@ -57,7 +58,8 @@ def get_choice(dr):
     # Generate list of all valid choices
     all_choices = []
 
-    for parcel in parcels:
+    # Limit for now to first 5 parcels
+    for parcel in parcels[:5]:
         for model in models:
             for target in targets:
                 
@@ -76,10 +78,31 @@ def get_choice(dr):
         # this makes it less likely to submit two of the same job
         # accidently.
         name = random.choice(all_choices)
-        save_loc = os.path.join(results_dr, name + '.npy')
         
+        parcel = name.split('---')[0]
+        model = name.split('---')[1]
+        target = name.split('---')[2]
+        save_loc = os.path.join(results_dr, name + '.npy')
+
+        print('Return pmt', parcel, model, target, flush=True)
+
         # Return this choice
         return parcel, model, target, save_loc
 
     # If done, return None
     return None
+
+def unpack_args():
+
+    base = list(sys.argv)[1:]
+    
+    args = {'parcel': base[0],
+            'model': base[1],
+            'target': base[2],
+            'save_loc': base[3]}
+
+    # Set name also
+    args['name'] = get_name(args['parcel'], args['model'], args['target'])
+
+    print('args:', args, flush=True)
+    return args

@@ -4,7 +4,7 @@ import numpy as np
 import os
 from joblib import Parallel, delayed
 
-from utils import extract_destr_rois, conv_to_array_32k_space
+from helpers import extract_destr_rois, conv_to_array_32k_space
 
 def extract_rois():
 

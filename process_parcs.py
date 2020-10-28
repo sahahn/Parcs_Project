@@ -2,7 +2,7 @@ import numpy as np
 import nibabel as nib
 import os
 
-from utils import conv_to_array_32k_space, conv_matlab, merge
+from helpers import conv_to_array_32k_space, conv_matlab, merge
 
 def main():
 
