@@ -11,7 +11,9 @@ def merge(lh, rh):
     
     if intersect > 0:
         if intersect / len(ul) > .75:
-            rh += max(ul)
+
+            # Add max + 1, since parcs can start at 0
+            rh += max(ul) + 1
         
     data = np.concatenate([lh, rh])
     return data

@@ -41,3 +41,4 @@ def evaluate(args, n_jobs, dask_ip=None):
     # Save scores, indicating this job is done
     scores = np.array(results['summary_scores'])
     np.save(args['save_loc'], scores)
+

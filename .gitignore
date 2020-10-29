@@ -8,3 +8,5 @@ Job_Logs
 setup_ML_Logs/My_Exp/test_subjects.txt
 setup_ML_Logs/My_Exp/train_subjects.txt
 *.pyc
+
+core.*

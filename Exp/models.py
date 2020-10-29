@@ -10,7 +10,7 @@ def get_pipe(model_str, parcel, cv=None, dask_ip=None):
 
     # Define loader with cache
     rois = SurfLabels(labels='/users/s/a/sahahn/Parcs_Project/parcels/' + parcel + '.npy')
-    loader = Loader(rois, cache_loc='/users/s/a/sahahn/scratch/cache2/' + parcel)
+    loader = Loader(rois, cache_loc='/users/s/a/sahahn/scratch/cache/' + parcel)
 
 
     if model_str == 'elastic':
@@ -18,8 +18,6 @@ def get_pipe(model_str, parcel, cv=None, dask_ip=None):
         elastic_param_search =\
             Param_Search(search_type='RandomSearch', n_iter=60,
                          splits=3, n_repeats=1, CV=cv, dask_ip=dask_ip)
-
-     
 
         model = Model('elastic', params=1,
                       param_search=elastic_param_search,

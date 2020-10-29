@@ -58,8 +58,8 @@ def get_choice(dr):
     # Generate list of all valid choices
     all_choices = []
 
-    # Limit for now to first 5 parcels
-    for parcel in parcels[:5]:
+    # brodmann  glasser_abox  icosahedron-1002_dlab  schaefer_500  schaefer_700
+    for parcel in parcels[:15]:
         for model in models:
             for target in targets:
                 
@@ -100,6 +100,21 @@ def unpack_args():
             'model': base[1],
             'target': base[2],
             'save_loc': base[3]}
+
+    try:
+        args['memory'] = base[4]
+    except IndexError:
+        args['memory'] = '8'
+
+    try:
+        args['original_partition'] = base[5]
+    except IndexError:
+        args['original_partition'] = 'ib'
+
+    # Constant for now
+    args['cores'] = 4
+    args['scale'] = 6
+    args['n_jobs'] = int(args['cores'] * args['scale'])
 
     # Set name also
     args['name'] = get_name(args['parcel'], args['model'], args['target'])
