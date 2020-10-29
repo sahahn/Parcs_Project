@@ -85,3 +85,15 @@ The following folder was downloaded from https://github.com/DiedrichsenLab/fs_LR
 Example files paths:
 - raw/diedrichsen_lab/Desikan.32k.L.label.gii
 - raw/diedrichsen_lab/Desikan.32k.R.label.gii
+
+
+-------------------
+
+### standard_mesh_atlases
+
+Downloaded from http://brainvis.wustl.edu/workbench/standard_mesh_atlases.zip only the files:
+
+- raw/standard_mesh_atlases/L.sphere.32k_fs_LR.surf.gii
+- raw/standard_mesh_atlases/R.sphere.32k_fs_LR.surf.gii
+
+Are used. They are used to generate new random parcellations.
