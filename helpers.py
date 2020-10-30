@@ -3,6 +3,37 @@ import numpy as np
 from scipy.io import loadmat
 from nibabel import GiftiImage
 
+from nilearn.surface import load_surf_mesh
+import numpy as np
+import networkx as nx
+
+def load_geo():
+
+    lh = load_surf_mesh('raw/standard_mesh_atlases/L.sphere.32k_fs_LR.surf.gii')[1]
+    rh = load_surf_mesh('raw/standard_mesh_atlases/R.sphere.32k_fs_LR.surf.gii')[1]
+
+    rh += (np.max(lh) + 1)
+    raw_geo = np.concatenate([lh, rh])
+    
+    G = nx.Graph()
+    for tri in raw_geo:
+        G.add_edge(tri[0], tri[1])
+        G.add_edge(tri[0], tri[2])
+        G.add_edge(tri[1], tri[2])
+        
+    geo = []
+    for i in range(len(G)):
+        geo.append(list(G.neighbors(i)))
+    
+    return geo
+
+def load_medial_wall():
+    
+    medial_wall = load_surf_data('raw/fs_LR_32k_label/medialwall.annot')
+    medial_wall_mask = ~medial_wall.astype('bool')
+
+    return medial_wall_mask
+
 def merge(lh, rh):
     
     ul = np.unique(lh)
@@ -13,7 +44,7 @@ def merge(lh, rh):
         if intersect / len(ul) > .75:
 
             # Add max + 1, since parcs can start at 0
-            rh += max(ul) + 1
+            rh += (max(ul) + 1)
         
     data = np.concatenate([lh, rh])
     return data
