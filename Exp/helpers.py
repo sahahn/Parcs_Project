@@ -45,7 +45,7 @@ def get_choice(dr):
     targets.remove('rel_family_id') # Not a target
 
     # Models
-    models = ['elastic', 'lgbm']
+    models = ['elastic', 'lgbm', 'svm']
 
     # Results Dr
     exp_dr = os.path.join(dr, 'Exp')
@@ -59,7 +59,7 @@ def get_choice(dr):
     all_choices = []
 
     # brodmann  glasser_abox  icosahedron-1002_dlab  schaefer_500  schaefer_700
-    for parcel in parcels[:15]:
+    for parcel in parcels[:20]:
         for model in models:
             for target in targets:
                 

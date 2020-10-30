@@ -17,18 +17,27 @@ hi_mem = set(['icosahedron-1002_dlab',
 short = set(['schaefer_100',
              'schaefer_200',
              'schaefer_300',
+             'schaefer_400',
              'icosahedron-42_dlab',
              'vdg11b',
+             'brodmann',
              'power2011_dlab',
-             'fan_abox'])
+             'fan_abox',
+             'dextrieux_dlab',
+             'destrieux_abox',
+             'glasser_abox',
+             'gordon',
+             'baldassano_abox',
+             'yeo_abox',
+             'aal_abox',
+             'shen_abox',
+             'desikan_dlab',
+             'desikan_abox'
+             ])
 
 # Changes to hi and short based on model
 if model == 'lgbm':
     hi_mem.add('icosahedron-642_dlab')
-
-# For now, dont use short with svm
-if model == 'svm':
-    short = set([])
 
 args = list(sys.argv)[1:]
 

@@ -18,8 +18,8 @@ args = unpack_args()
 # Setup dask
 client, dask_ip = setup_ib(args['name'], cores, memory, scale)
 
-# Wait up to an hour lets say - for dask to connect before starting
-with parallel_backend('dask', wait_for_workers_timeout=3600):
+# Wait up to two hours
+with parallel_backend('dask', wait_for_workers_timeout=7200):
 
     # Run evaluate
     evaluate(args, n_jobs, dask_ip=dask_ip)
