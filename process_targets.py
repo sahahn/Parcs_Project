@@ -50,6 +50,14 @@ def main():
     data['ksads_back_c_mh_sa_p'] =\
         data['ksads_back_c_mh_sa_p'].replace({'Yes': 1, 'Not sure': np.nan}).astype('float')
 
+    # Recode dev motor skill to be an oridinal / regression type problem
+    recode = {'Much later': 0,
+              'Somewhat later': 1,
+              'About average': 2,
+              'Somewhat earlier': 3,
+              'Much earlier': 4}
+    data['devhx_20_motor_dev_p'] = data['devhx_20_motor_dev_p'].replace(recode)
+
     # Add some composites for sports activity
     sp = 'sports_activity_activities_p___'
 
@@ -75,8 +83,8 @@ def main():
     rep_dic = {"No": 0, "Don't know": 0, "Yes": 1}
 
     devhx_vars = ['devhx_14a_blue_birth_p', 'devhx_14b_slow_heart_beat_p', 'devhx_14c_did_not_breathe_p',
-                'devhx_14d_convulsions_p', 'devhx_14e_jaundice_p', 'devhx_14f_oxygen_p',
-                'devhx_14g_blood_transfuse_p', 'devhx_14h_rh_incompatible_p']
+                  'devhx_14d_convulsions_p', 'devhx_14e_jaundice_p', 'devhx_14f_oxygen_p',
+                  'devhx_14g_blood_transfuse_p', 'devhx_14h_rh_incompatible_p']
 
     d_at_birth = load_from_rds(devhx_vars)
     d_at_birth.replace(rep_dic, inplace=True)
