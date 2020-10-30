@@ -97,3 +97,10 @@ Downloaded from http://brainvis.wustl.edu/workbench/standard_mesh_atlases.zip on
 - raw/standard_mesh_atlases/R.sphere.32k_fs_LR.surf.gii
 
 Are used. They are used to generate new random parcellations.
+
+----------------------
+
+### fs_LR_32k_label
+
+Downloaded from https://github.com/ThomasYeoLab/CBIG/tree/master/data/templates/surface/fs_LR_32k/label
+Includes only the medialwall.annot file. This is a mask with 0's indicating where in the fs_LR_32k space there is medial wall.
