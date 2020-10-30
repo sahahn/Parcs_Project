@@ -93,6 +93,9 @@ loading: devhx_5_twin_p
 loading: devhx_6_pregnancy_planned_p
 loading: devhx_12a_born_premature_p
 loading: devhx_20_motor_dev_p
+Filtering for outliers by stds: (10, 10)
+Min-Max value (pre-filter): 0.0 4.0
+Min-Max value (post outlier filtering): 0.0 4.0
 loading: ksads_back_c_det_susp_p
 loading: ksads_back_c_mh_sa_p
 loading: lmt_scr_perc_correct
@@ -422,13 +425,18 @@ Internal_Name
 
 Note: 146 subject(s) with NaN not included/shown!
 -- devhx_20_motor_dev_p --
-                  Original_Name  Counts  Frequency
-Internal_Name                                     
-0                 About average    6283   0.535498
-1                  Much earlier    1124   0.095798
-2                    Much later     136   0.011591
-3              Somewhat earlier    3280   0.279553
-4                Somewhat later     910   0.077559
+          devhx_20_motor_dev_p
+count                11733.000
+mean                     2.370
+std                      0.806
+min                      0.000
+25%                      2.000
+50%                      2.000
+75%                      3.000
+max                      4.000
+median                   2.000
+skew                     0.197
+kurtosis                 0.246
 
 Note: 142 subject(s) with NaN not included/shown!
 -- ksads_back_c_det_susp_p --
@@ -666,39 +674,4 @@ Dropped 2 rows for missing values, based on the provided drop_na param: True wit
 Loaded rows with NaN remaining: 0
 Loaded Shape: (11873, 1)
 Loading from df or files
-
-Dropped 7 rows based on filter input params, e.g. filter outlier percent, drop cat, ect...
-Loading from df or files
-
-Dropped 9 rows based on filter input params, e.g. filter outlier percent, drop cat, ect...
-Dropped 9 rows based on filter input params, e.g. filter outlier percent, drop cat, ect...
-Dropped 5 rows based on filter input params, e.g. filter outlier percent, drop cat, ect...
-Merged with existing (merge=inner)
-New combined shape: (9441, 4)
-Calling Prepare_All_Data() to change the default merge behavior call it again!
-Preparing final data, in self.all_data
-Any changes to loaded data, covars or strat will not be included, from now on.
-
-Final data (w/ target) for modeling loaded shape: (9432, 50)
-Performing split on 9432 subjectsWarning: Test size of 0 passed, all subjects set to train.
-
-Performed train test split
-Train size: 9432
-Test size:  0
-Default ML verbosity set within self.default_ML_verbosity.
-----------------------
-save_results: False
-progress_bar: True
-progress_loc: None
-pipeline_verbose: True
-compute_train_score: False
-show_init_params: True
-fold_name: True
-time_per_fold: True
-score_per_fold: True
-fold_sizes: True
-best_params: True
-best_params_score: True
-save_to_logs: False
-flush: False
 

@@ -55,8 +55,9 @@ def main():
               'Somewhat later': 1,
               'About average': 2,
               'Somewhat earlier': 3,
-              'Much earlier': 4}
-    data['devhx_20_motor_dev_p'] = data['devhx_20_motor_dev_p'].replace(recode)
+              'Much earlier': 4,
+              "Don't know": np.nan}
+    data['devhx_20_motor_dev_p'] = data['devhx_20_motor_dev_p'].replace(recode).astype('float')
 
     # Add some composites for sports activity
     sp = 'sports_activity_activities_p___'
