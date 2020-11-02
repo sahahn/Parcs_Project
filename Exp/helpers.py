@@ -99,21 +99,33 @@ def unpack_args():
     args = {'parcel': base[0],
             'model': base[1],
             'target': base[2],
-            'save_loc': base[3]}
+            'save_loc': base[3],
+            'memory': base[4],
+            'original_partition': base[5]}
 
-    try:
-        args['memory'] = base[4]
-    except IndexError:
-        args['memory'] = '8'
+    # Seperate params for bluemoon
+    if args['original_partition'] == 'bluemoon':
 
-    try:
-        args['original_partition'] = base[5]
-    except IndexError:
-        args['original_partition'] = 'ib'
+        if args['memory'] == 'low':
+            args['memory'] = '8'
+        elif args['memory'] == 'high':
+            args['memory'] = '18'
 
-    # Constant for now
-    args['cores'] = 4
-    args['scale'] = 6
+        args['cores'] = 4
+        args['scale'] = 8
+
+    # Everything else ... 
+    else:
+
+        if args['memory'] == 'low':
+            args['memory'] = '8'
+        elif args['memory'] == 'high':
+            args['memory'] = '18'
+
+        args['cores'] = 4
+        args['scale'] = 6
+
+    # Set n jobs
     args['n_jobs'] = int(args['cores'] * args['scale'])
 
     # Set name also

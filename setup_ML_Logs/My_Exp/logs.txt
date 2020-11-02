@@ -675,3 +675,38 @@ Loaded rows with NaN remaining: 0
 Loaded Shape: (11873, 1)
 Loading from df or files
 
+Dropped 7 rows based on filter input params, e.g. filter outlier percent, drop cat, ect...
+Loading from df or files
+
+Dropped 9 rows based on filter input params, e.g. filter outlier percent, drop cat, ect...
+Dropped 9 rows based on filter input params, e.g. filter outlier percent, drop cat, ect...
+Dropped 5 rows based on filter input params, e.g. filter outlier percent, drop cat, ect...
+Merged with existing (merge=inner)
+New combined shape: (9441, 4)
+Calling Prepare_All_Data() to change the default merge behavior call it again!
+Preparing final data, in self.all_data
+Any changes to loaded data, covars or strat will not be included, from now on.
+
+Final data (w/ target) for modeling loaded shape: (9432, 50)
+Performing split on 9432 subjectsWarning: Test size of 0 passed, all subjects set to train.
+
+Performed train test split
+Train size: 9432
+Test size:  0
+Default ML verbosity set within self.default_ML_verbosity.
+----------------------
+save_results: False
+progress_bar: True
+progress_loc: None
+pipeline_verbose: True
+compute_train_score: False
+show_init_params: True
+fold_name: True
+time_per_fold: True
+score_per_fold: True
+fold_sizes: True
+best_params: True
+best_params_score: True
+save_to_logs: False
+flush: False
+

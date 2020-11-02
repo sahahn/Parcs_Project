@@ -10,4 +10,4 @@
 
 cd ${SLURM_SUBMIT_DIR}
 
-python ib_submit.py $1 $2 $3 $4
+python ib_submit.py $1 $2 $3 $4 $5 $6

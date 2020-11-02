@@ -10,4 +10,4 @@
 
 cd ${SLURM_SUBMIT_DIR}
 
-python dask_submit_high_mem.py $1 $2 $3 $4
+python dask_submit_high_mem.py $1 $2 $3 $4 $5 $6
