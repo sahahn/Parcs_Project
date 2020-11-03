@@ -16,95 +16,24 @@ def setup_paths(name):
         pass
     
     os.makedirs(temp_dr, exist_ok=True)
-    output = '--output=' + str(os.path.join(temp_dr, '%x_%j.out'))
+    output = ['--output=' + str(os.path.join(temp_dr, '%x_%j.out'))]
 
-    return temp_dr, output
+    return output
 
-def setup_dask(name, cores, memory, scale):
+def setup_dask(args):
 
-    temp_dr, output = setup_paths(name)
-
-    # Create dask slurm cluster
-    cluster = SLURMCluster(
-        cores=cores,
-        memory=memory,
-        processes=1,
-        queue='bluemoon',
-        walltime='30:00:00',
-        local_directory='/tmp/' + name,
-        job_extra=[output])
-
-    # Setup rest of dask to run
-    cluster.scale(jobs=scale)
-    dask_ip = cluster.scheduler_address
-    
-    # Make client
-    client = Client(dask_ip)
-    
-    return client, dask_ip
-
-def setup_ib(name, cores, memory, scale):
-
-    temp_dr, output = setup_paths(name)
-
-    # Create dask slurm cluster
-    cluster = SLURMCluster(
-        cores=cores,
-        memory=memory,
-        processes=1,
-        queue='ib',
-        walltime='30:00:00',
-        local_directory='/tmp/' + name,
-        job_extra=[output])
-
-    # Setup rest of dask to run
-    cluster.scale(jobs=scale)
-    dask_ip = cluster.scheduler_address
-    
-    # Make client
-    client = Client(dask_ip)
-    
-    return client, dask_ip
-    
-    
-def setup_short(args):
-
-    # Setup temp dr + output
-    temp_dr, output = setup_paths(args['name'])
+    # Get output
+    output = setup_paths(args['name'])
 
     # Create dask slurm cluster
     cluster = SLURMCluster(
         cores=args['cores'],
         memory=str(args['memory']) + ' GB',
         processes=1,
-        queue='short',
-        walltime='3:00:00',
+        queue=args['partition'],
+        walltime=args['time'],
         local_directory='/tmp/' + args['name'],
-        job_extra=[output])
-
-    # Setup rest of dask to run
-    cluster.scale(jobs=args['scale'])
-    dask_ip = cluster.scheduler_address
-
-    client = Client(dask_ip)
-    
-    return client, dask_ip
-
-
-def setup_bluemoon(args):
-
-    # Setup temp dr + output
-    temp_dr, output = setup_paths(args['name'])
-
-     # Create dask slurm cluster
-    cluster = SLURMCluster(
-        cores=args['cores'],
-        memory=str(args['memory']) + ' GB',
-        processes=1,
-        queue='bluemoon',
-        walltime='30:00:00',
-        local_directory='/tmp/' + args['name'],
-        job_extra=[output])
+        job_extra=output)
 
     # Setup rest of dask to run
     cluster.scale(jobs=args['scale'])

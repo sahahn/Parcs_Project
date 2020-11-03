@@ -46,6 +46,7 @@ def get_choice(dr):
 
     # Models
     models = ['elastic', 'lgbm', 'svm']
+    models = ['elastic']
 
     # Results Dr
     exp_dr = os.path.join(dr, 'Exp')
@@ -58,8 +59,7 @@ def get_choice(dr):
     # Generate list of all valid choices
     all_choices = []
 
-    # brodmann  glasser_abox  icosahedron-1002_dlab  schaefer_500  schaefer_700
-    for parcel in parcels[:20]:
+    for parcel in parcels:
         for model in models:
             for target in targets:
                 
@@ -100,33 +100,27 @@ def unpack_args():
             'model': base[1],
             'target': base[2],
             'save_loc': base[3],
-            'memory': base[4],
-            'original_partition': base[5]}
-
-    # Seperate params for bluemoon
-    if args['original_partition'] == 'bluemoon':
-
-        if args['memory'] == 'low':
-            args['memory'] = '8'
-        elif args['memory'] == 'high':
-            args['memory'] = '18'
-
-        args['cores'] = 4
-        args['scale'] = 8
-
-    # Everything else ... 
-    else:
-
-        if args['memory'] == 'low':
-            args['memory'] = '8'
-        elif args['memory'] == 'high':
-            args['memory'] = '18'
-
-        args['cores'] = 4
-        args['scale'] = 6
+            'memory': int(float(base[4])),
+            'partition': base[5],
+            'cores': int(float(base[6])),
+            'scale': int(float(base[7]))}
 
     # Set n jobs
     args['n_jobs'] = int(args['cores'] * args['scale'])
+
+    # Set times based on partition
+    if args['partition'] == 'short':
+        args['time'] = '3:00:00'
+        args['wait_time'] = 3600
+    else:
+        args['time'] = '30:00:00'
+        args['wait_time'] = 10800
+
+    # Set is low mem flag
+    if args['memory'] / args['cores'] <= 2:
+        args['low_mem'] = True
+    else:
+        args['low_mem'] = False
 
     # Set name also
     args['name'] = get_name(args['parcel'], args['model'], args['target'])

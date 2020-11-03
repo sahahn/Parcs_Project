@@ -3,14 +3,18 @@ import numpy as np
 from scipy.io import loadmat
 from nibabel import GiftiImage
 
-from nilearn.surface import load_surf_mesh
+from nilearn.surface import load_surf_mesh, load_surf_data
 import numpy as np
 import networkx as nx
+import os
 
-def load_geo():
+def load_geo(standard_mesh_loc):
 
-    lh = load_surf_mesh('raw/standard_mesh_atlases/L.sphere.32k_fs_LR.surf.gii')[1]
-    rh = load_surf_mesh('raw/standard_mesh_atlases/R.sphere.32k_fs_LR.surf.gii')[1]
+    lh_loc = os.path.join(standard_mesh_loc, 'L.sphere.32k_fs_LR.surf.gii')
+    rh_loc = os.path.join(standard_mesh_loc, 'R.sphere.32k_fs_LR.surf.gii')
+
+    lh = load_surf_mesh(lh_loc)[1]
+    rh = load_surf_mesh(rh_loc)[1]
 
     rh += (np.max(lh) + 1)
     raw_geo = np.concatenate([lh, rh])
@@ -27,9 +31,9 @@ def load_geo():
     
     return geo
 
-def load_medial_wall():
+def load_medial_wall(annot_loc):
     
-    medial_wall = load_surf_data('raw/fs_LR_32k_label/medialwall.annot')
+    medial_wall = load_surf_data(annot_loc)
     medial_wall_mask = ~medial_wall.astype('bool')
 
     return medial_wall_mask

@@ -10,7 +10,7 @@ def get_pipe(model_str, parcel, cv=None, dask_ip=None):
 
     # Define loader with cache
     rois = SurfLabels(labels='/users/s/a/sahahn/Parcs_Project/parcels/' + parcel + '.npy')
-    loader = Loader(rois, cache_loc='/users/s/a/sahahn/scratch/cache/' + parcel)
+    loader = Loader(rois, cache_loc='/users/s/a/sahahn/scratch/cache3/' + parcel)
 
     base_param_search =\
         Param_Search(search_type='RandomSearch', n_iter=60,

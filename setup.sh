@@ -9,7 +9,9 @@
 
 cd ${SLURM_SUBMIT_DIR}
 
-python process_parcs.py
-python process_derivatives.py
-python process_targets.py
-python setup_ML.py
+#python process_parcs.py
+#python process_derivatives.py
+#python process_targets.py
+python process_random_parcels.py
+#python setup_ML.py
+

@@ -8,12 +8,30 @@ dr = '/users/s/a/sahahn/Parcs_Project/'
 # Get parcel, model, target to run
 parcel, model, target, save_loc = get_choice(dr)
 
+# Base parcs that need high mem
 hi_mem = set(['icosahedron-1002_dlab',
               'icosahedron-1442_dlab',
               'schaefer_800',
               'schaefer_900',
               'schaefer_1000'])
 
+# Add random
+for size in [800, 900, 1000]:
+    for random_state in range(0, 50):
+        hi_mem.add('random_' + str(size) + '_' + str(random_state))
+
+# If lgbm or svm
+if model in set(['lgbm', 'svm']):
+    hi_mem.add('icosahedron-642_dlab')
+    hi_mem.add('schaefer_500')
+    hi_mem.add('schaefer_600')
+    hi_mem.add('schaefer_700')
+
+    for size in [500, 600, 700]:
+        for random_state in range(0, 50):
+            hi_mem.add('random_' + str(size) + '_' + str(random_state))
+
+# Base parcs that can run short
 short = set(['schaefer_100',
              'schaefer_200',
              'schaefer_300',
@@ -32,62 +50,70 @@ short = set(['schaefer_100',
              'aal_abox',
              'shen_abox',
              'desikan_dlab',
-             'desikan_abox'
+             'desikan_abox',
+             'gordon_abox',
              ])
 
-# Changes to hi and short based on model
-if model in set(['lgbm', 'svm']):
-    hi_mem.add('icosahedron-642_dlab')
-    hi_mem.add('schaefer_600')
-    hi_mem.add('schaefer_700')
+# Add random
+for size in [100, 200, 300, 400]:
+    for random_state in range(0, 50):
+        short.add('random_' + str(size) + '_' + str(random_state))
 
-if model == 'lgbm':
-    hi_mem.add('schaefer_500')
+# If elastic, extra short
+if model == 'elastic':
+    short.add('schaefer_500')
+    short.add('schaefer_600')
+    short.add('schaefer_700')
+    short.add('icosahedron-642_dlab')
+    short.add('icosahedron-362_dlab')
 
-args = list(sys.argv)[1:]
-mem = 'low'
+    for size in [500, 600, 700]:
+        for random_state in range(0, 50):
+            short.add('random_' + str(size) + '_' + str(random_state))
 
-if len(args) == 0:
-    base = 'sbatch dask_submit.sh '
+# Fixed
+job_name = ''
+cores = 4
+scale = 6
 
+# Set job memory
+if parcel in hi_mem:
+    mem_per_cpu = '8G'
+    mem = int(cores * 5)
+    job_name += 'high_'
+    
 else:
+    mem_per_cpu = '4G'
+    mem = int(cores * 2)
+    job_name += 'low_'
 
-    # If parcel in high memory, change to high mem
-    if parcel in hi_mem:
-        mem = 'high'
+# Set parition
+if parcel in short:
+    partition = 'short'
+    time = '3:00:00'
+    job_name += 'short'
+else:
+    partition = 'bluemoon'
+    time = '30:00:00'
+    job_name += 'bluemoon'
 
-    # Check for parcel in hi_mem
-    if parcel in hi_mem and args[0] == 'ib':
-        print('Changing to ib_high', flush=True)
-        args[0] = 'ib_high'
+# Sbatch commands
+cmd = 'sbatch --mem-per-cpu=' + mem_per_cpu + ' '
+cmd += '--job-name=' + job_name + ' '
+cmd += '--partition=' + partition + ' ' 
+cmd += '--time=' + time + ' '
 
-    if parcel in hi_mem and args[0] == 'dask':
-        print('Changing to dask_high', flush=True)
-        args[0] = 'dask_high'
+# Job commands
+cmd += 'submit_job.sh '
+cmd += parcel + ' '
+cmd += model + ' '
+cmd += target + ' '
+cmd += save_loc + ' '
+cmd += str(mem) + ' '
+cmd += partition + ' '
+cmd += str(cores) + ' '
+cmd += str(scale)
 
-    # Check for parcel in short
-    if parcel in short:
-        print('Changing to short queue', flush=True)
-        base = 'sbatch short_submit.sh '
-
-    # Otherwise, proc by arg name
-    elif args[0] == 'bluemoon':
-        base = 'sbatch bluemoon_submit.sh '
-    elif args[0] == 'dask':
-        base = 'sbatch dask_submit.sh '
-    elif args[0] == 'ib':
-        base = 'sbatch dask_submit.sh '
-    elif args[0] == 'ib_high':
-        base = 'sbatch dask_submit_high_mem.sh '
-    elif args[0] == 'dask_high':
-        base = 'sbatch dask_submit_high_mem.sh '
-    else:
-        base = None
-
-# Submit the job
-cmd = base + parcel + ' ' + model + ' ' + target + ' ' + save_loc + ' ' + mem + ' ' + args[0]
+# Submit job and print
 os.system(cmd)
-
-# Print info
 print('Submitted: ', cmd, flush=True)
-
