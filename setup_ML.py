@@ -121,7 +121,8 @@ def main():
                                 time_per_fold=True,
                                 score_per_fold=True,
                                 fold_sizes=True,
-                                best_params=True)
+                                best_params=True,
+                                flush=True)
 
     # Save ML object
     ML.Save('data/Base.ML', low_memory=True)
