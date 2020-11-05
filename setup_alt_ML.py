@@ -2,7 +2,6 @@ import pandas as pd
 import numpy as np
 import os
 from setup_ML import load_base
-from Exp.models import get_pipe
 from BPt import *
 
 def main():
@@ -14,7 +13,7 @@ def main():
                 random_state=5,
                 notebook=False,
                 mp_context='loky',
-                n_jobs=16)
+                n_jobs=32)
 
     # Load targets and Strat
     ML = load_base(ML, show_dist=False)
