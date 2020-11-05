@@ -4,6 +4,49 @@ import pandas as pd
 import time
 import random
 import sys
+import shutil
+
+#models = ['elastic', 'lgbm', 'svm']
+models = ['elastic']
+
+def clean_cache(dr, scratch_dr):
+
+    # Get results dr
+    exp_dr = os.path.join(dr, 'Exp')
+    results_dr = os.path.join(exp_dr, 'results')
+
+    # Find total where means done
+    total = int(len(models) * len(load_target_names(dr)))
+
+    # Get the count of 100% parcellations
+    parcs_counts = {}
+    for file in os.listdir(results_dr):
+        
+        parc = file.split('---')[0]
+        model = file.split('---')[1]
+        
+        if model in models:
+            result = np.load(os.path.join(results_dr, file))
+        
+            if len(result) > 1:
+                try:
+                    parcs_counts[parc] += 1
+                except KeyError:
+                    parcs_counts[parc] = 1
+    
+    for end in ['' , '1', '2', '3', '4', '5']:
+        dr = os.path.join(scratch_dr, 'cache' + end)
+        if os.path.exists(dr):
+            for parc in parcs_counts:
+                if parcs_counts[parc] == total:
+                    cache_dr = os.path.join(dr, parc)
+                    if os.path.exists(cache_dr):
+                        print('DELETE:', cache_dr)
+
+                        try:
+                            shutil.rmtree(cache_dr)
+                        except FileNotFoundError:
+                            print('Looks like another job is already deleting')
 
 def get_done(results_dr):
 
@@ -30,11 +73,7 @@ def get_name(parcel, model, target):
     name = parcel + '---' + model + '---' + target
     return name
 
-def get_choice(dr):
-
-    # Parcels
-    parcel_dr = os.path.join(dr, 'parcels')
-    parcels = [p.replace('.npy', '') for p in os.listdir(parcel_dr)]
+def load_target_names(dr):
 
     # Target names
     data_dr = os.path.join(dr, 'data')
@@ -44,9 +83,17 @@ def get_choice(dr):
                                nrows=0))
     targets.remove('rel_family_id') # Not a target
 
-    # Models
-    models = ['elastic', 'lgbm', 'svm']
-    models = ['elastic']
+    return targets
+
+
+def get_choice(dr):
+
+    # Parcels
+    parcel_dr = os.path.join(dr, 'parcels')
+    parcels = [p.replace('.npy', '') for p in os.listdir(parcel_dr)]
+
+    # Load target names
+    targets = load_target_names(dr)
 
     # Results Dr
     exp_dr = os.path.join(dr, 'Exp')

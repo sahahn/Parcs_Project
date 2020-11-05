@@ -14,7 +14,7 @@ def get_pipe(model_str, parcel, cv=None, dask_ip=None):
 
     base_param_search =\
         Param_Search(search_type='RandomSearch', n_iter=60,
-                     splits=3, n_repeats=1, CV=cv, dask_ip=dask_ip)
+                     splits=3, n_repeats=1, cv=cv, dask_ip=dask_ip)
 
 
     if model_str == 'elastic':
@@ -27,7 +27,7 @@ def get_pipe(model_str, parcel, cv=None, dask_ip=None):
 
         lgbm_param_search =\
             Param_Search(search_type='TwoPointsDE', n_iter=180,
-                         splits=0.25, n_repeats=1, CV=cv, dask_ip=dask_ip)
+                         splits=0.25, n_repeats=1, cv=cv, dask_ip=dask_ip)
 
         model = Model('light gbm', params=1, param_search=lgbm_param_search)
 

@@ -15,6 +15,7 @@ def evaluate(args, n_jobs, dask_ip=None):
     ML = Load('/users/s/a/sahahn/Parcs_Project/data/Base.ML',
             log_dr=None, notebook=False)
     ML.n_jobs = n_jobs
+    ML.mp_context = 'loky'
 
     # Try set flush on
     ML.Set_Default_ML_Verbosity(flush=True)
@@ -36,7 +37,7 @@ def evaluate(args, n_jobs, dask_ip=None):
                           problem_spec=ps,
                           splits=5,
                           n_repeats=1,
-                          CV=cv)
+                          cv=cv)
 
     # Save scores, indicating this job is done
     scores = np.array(results['summary_scores'])

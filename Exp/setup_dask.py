@@ -41,4 +41,4 @@ def setup_dask(args):
 
     client = Client(dask_ip)
     
-    return client, dask_ip
+    return client, dask_ip, cluster
