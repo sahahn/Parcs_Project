@@ -94,6 +94,8 @@ def load_data(ML, show_dist=False):
             save_loc = 'setup_ML_Logs/' + name + '.mp4'
             anim.save(save_loc, dpi=500, writer=writer)
 
+    return ML
+
 def main():
 
     # Setup main ML object with logs
