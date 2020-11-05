@@ -11,8 +11,8 @@ geo = load_geo(standard_mesh_loc='raw/standard_mesh_atlases/')
 medial_wall_mask =\
     load_medial_wall(annot_loc='raw/fs_LR_32k_label/medialwall.annot')
 
-for size in [100, 200, 300]:
-    for random_state in range(2, 5):
+for size in [800, 900]:
+    for random_state in range(0, 5):
 
         # Set save name
         save_name = 'parcels/random_' + str(size) + '_' + str(random_state) + '.npy'

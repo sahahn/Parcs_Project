@@ -12,7 +12,7 @@ strat_u_name = _Strat
 random state = 5
 n_jobs = 32
 dpi = 100
-mp_context = fork
+mp_context = loky
 BPt_ML object initialized
 Default load params set within self.default_load_params.
 ----------------------
@@ -675,6 +675,16 @@ Loaded rows with NaN remaining: 0
 Loaded Shape: (11873, 1)
 Loading from df or files
 
+Loading from df or files
+
+Dropped 7 rows based on filter input params, e.g. filter outlier percent, drop cat, ect...
+Loading from df or files
+
+Dropped 9 rows based on filter input params, e.g. filter outlier percent, drop cat, ect...
+Dropped 9 rows based on filter input params, e.g. filter outlier percent, drop cat, ect...
+Dropped 5 rows based on filter input params, e.g. filter outlier percent, drop cat, ect...
+Merged with existing (merge=inner)
+New combined shape: (9441, 4)
 Dropped 7 rows based on filter input params, e.g. filter outlier percent, drop cat, ect...
 Loading from df or files
 
@@ -708,5 +718,5 @@ fold_sizes: True
 best_params: True
 best_params_score: True
 save_to_logs: False
-flush: False
+flush: True
 
