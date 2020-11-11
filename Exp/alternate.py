@@ -16,11 +16,16 @@ def main():
 
     # Run Comparison
     for target in ML.targets_keys:
-        for model in ['elastic']:
+        for model in ['elastic', 'lgbm', 'svm']:
             
-            # Get pipe, but set loaders to None, and dask_ip to None
+            # Get pipe
             pipeline = get_pipe(model, '', cv=cv, dask_ip=None)
+
+            # No loader
             pipeline.loaders = None
+
+            # Have to set Imputer, just use mean imputer
+            pipeline.imputers = Imputer('mean')
             
             # Get name
             name = 'freesurfer_destr---' + model + '---' + target + '.npy'
@@ -30,11 +35,11 @@ def main():
             done = os.listdir('results')
             if name not in done and time.time() - start_time < 72000:
             
-                # Run with 5 repeats
+                # Run same as other, 5 splits, 1 repeat
                 results = ML.Evaluate(model_pipeline=pipeline,
                                       problem_spec=Problem_Spec(target=target),
                                       splits=5,
-                                      n_repeats=5,
+                                      n_repeats=1,
                                       cv=cv)
                 
                 # Save results once done

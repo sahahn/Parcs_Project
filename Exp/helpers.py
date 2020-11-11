@@ -7,7 +7,7 @@ import sys
 import shutil
 
 #models = ['elastic', 'lgbm', 'svm']
-models = ['elastic']
+models = ['elastic', 'lgbm', 'svm']
 
 def clean_cache(dr, scratch_dr):
 
@@ -20,7 +20,9 @@ def clean_cache(dr, scratch_dr):
 
     # Get the count of 100% parcellations
     parcs_counts = {}
-    for file in os.listdir(results_dr):
+
+    files = os.listdir(results_dr)
+    for file in files:
         
         parc = file.split('---')[0]
         model = file.split('---')[1]
@@ -33,20 +35,19 @@ def clean_cache(dr, scratch_dr):
                     parcs_counts[parc] += 1
                 except KeyError:
                     parcs_counts[parc] = 1
+
+    all_parc_keys = list(parcs_counts)
+    random.shuffle(all_parc_keys)
     
     for end in ['' , '1', '2', '3', '4', '5']:
         dr = os.path.join(scratch_dr, 'cache' + end)
         if os.path.exists(dr):
-            for parc in parcs_counts:
+            for parc in all_parc_keys:
                 if parcs_counts[parc] == total:
                     cache_dr = os.path.join(dr, parc)
                     if os.path.exists(cache_dr):
-                        print('DELETE:', cache_dr)
-
-                        try:
-                            shutil.rmtree(cache_dr)
-                        except FileNotFoundError:
-                            print('Looks like another job is already deleting')
+                        print('DELETE:', cache_dr, flush=True)
+                        shutil.rmtree(cache_dr, ignore_errors=True)
 
 def get_done(results_dr):
 
@@ -106,7 +107,7 @@ def get_choice(dr):
     # Generate list of all valid choices
     all_choices = []
 
-    for parcel in parcels:
+    for parcel in parcels[:20]:
         for model in models:
             for target in targets:
                 
@@ -137,7 +138,7 @@ def get_choice(dr):
         return parcel, model, target, save_loc
 
     # If done, return None
-    return None
+    return None, None, None
 
 def unpack_args():
 
@@ -158,10 +159,10 @@ def unpack_args():
     # Set times based on partition
     if args['partition'] == 'short':
         args['time'] = '3:00:00'
-        args['wait_time'] = 3600
+        args['wait_time'] = 1800
     else:
         args['time'] = '30:00:00'
-        args['wait_time'] = 10800
+        args['wait_time'] = 1800
 
     # Set is low mem flag
     if args['memory'] / args['cores'] <= 2:

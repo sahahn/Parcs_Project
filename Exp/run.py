@@ -1,6 +1,7 @@
 import os
 import sys
 from helpers import get_choice, clean_cache
+import random
 
 # Main directory
 dr = '/users/s/a/sahahn/Parcs_Project/'
@@ -14,6 +15,8 @@ for _ in range(n_submit):
 
     # Get parcel, model, target to run
     parcel, model, target, save_loc = get_choice(dr)
+    if parcel is None:
+        break
 
     # Base parcs that need high mem
     hi_mem = set(['icosahedron-1002_dlab',
@@ -66,25 +69,44 @@ for _ in range(n_submit):
         for random_state in range(0, 50):
             short.add('random_' + str(size) + '_' + str(random_state))
 
-    # If elastic, extra short
-    if model == 'elastic':
+    # If elastic or lgbm, extra short
+    if model in set(['elastic', 'lgbm']):
         short.add('schaefer_500')
         short.add('schaefer_600')
         short.add('schaefer_700')
+        short.add('schaefer_800')
+        short.add('schaefer_900')
         short.add('icosahedron-642_dlab')
         short.add('icosahedron-362_dlab')
 
-        for size in [500, 600, 700]:
+        for size in [500, 600, 700, 800, 900]:
             for random_state in range(0, 50):
                 short.add('random_' + str(size) + '_' + str(random_state))
 
-    # Extra scaled paritions
+    # Add up to 500 if SVM - might be playing it too close
+    if model == 'svm':
+        short.add('schaefer_500')
+        for random_state in range(0, 50):
+            short.add('random_500_' + str(random_state))
+
+    if model == 'elastic':
+        short.add('schaefer_1000')
+        for random_state in range(0, 50):
+            short.add('random_1000_' + str(random_state))
+
+    # Extra scaled paritions - for all
     extra = set(['icosahedron-1002_dlab',
                  'icosahedron-1442_dlab'])
 
-    for size in [900, 1000]:
-        for random_state in range(0, 50):
-            extra.add('random_' + str(size) + '_' + str(random_state))
+    # Extra for svm and lgbm
+    if model in set(['svm', 'lgbm']):
+        extra.add('schaefer_800')
+        extra.add('schaefer_900')
+        extra.add('schaefer_1000')
+
+        for size in [800, 900, 1000]:
+            for random_state in range(0, 50):
+                extra.add('random_' + str(size) + '_' + str(random_state))
 
     # Job name gets filled in
     job_name = ''
@@ -110,8 +132,9 @@ for _ in range(n_submit):
         job_name += 'short'
     else:
         partition = 'bluemoon'
-        time = '30:00:00'
         job_name += 'bluemoon'
+
+        time = '30:00:00'   
 
     # Proc if in extra, set higher scale
     if parcel in extra:
@@ -135,7 +158,7 @@ for _ in range(n_submit):
     cmd += str(mem) + ' '
     cmd += partition + ' '
     cmd += str(cores) + ' '
-    cmd += str(scale)
+    cmd += str(scale) + ' '
 
     # Submit job and print
     os.system(cmd)

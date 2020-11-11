@@ -117,7 +117,7 @@ def conv_matlab(lh_loc, rh_loc, lh_map, rh_map):
 
     return merge(lh, rh)
 
-def extract_destr_rois(loc):
+def extract_rois(loc):
     
     if loc.split('/')[-1].startswith('rh'):
         prepend = 'rh.'

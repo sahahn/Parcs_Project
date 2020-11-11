@@ -4,14 +4,18 @@ import numpy as np
 import os
 from joblib import Parallel, delayed
 
-from helpers import extract_destr_rois, conv_to_array_32k_space
+from helpers import extract_rois, conv_to_array_32k_space
 
-def extract_rois():
+def extract_fs_rois(parc='aparc.a2009s'):
+
+    print('Extract Freesurfer ROIs parc = ', parc)
+
+    glob_path = 'raw/derivatives/freesurfer-5.3.0-HCP/*/ses-baselineYear1Arm1/stats/*.' + parc + '.stats'
 
     # Extract the destr ROIs straight from freesurfer
     dicts = {}
-    for file in glob.glob('raw/derivatives/freesurfer-5.3.0-HCP/*/ses-baselineYear1Arm1/stats/*.aparc.a2009s.stats'):
-        as_dict = extract_destr_rois(file)
+    for file in glob.glob(glob_path):
+        as_dict = extract_rois(file)
         subj = file.split('/')[3].split('-')[1]
 
         try:
@@ -21,7 +25,11 @@ def extract_rois():
         
     data = pd.DataFrame.from_dict(dicts, orient='index')
     data.index.name = 'src_subject_id'
-    data.to_csv('data/rois.csv')
+
+    save_loc = 'data/' + parc + '_rois.csv'
+    print('save_loc:', save_loc)
+    
+    data.to_csv(save_loc)
 
 
 def resave_data():
@@ -64,8 +72,14 @@ def resave_data():
 
 def main():
 
-    extract_rois()
-    resave_data()
+    # Destr
+    extract_fs_rois('aparc.a2009s')
+
+    # Freesurfer
+    extract_fs_rois('aparc')
+    
+    # Resave main data as numpy arrays
+    #resave_data()
     
 
 if __name__ == "__main__":
