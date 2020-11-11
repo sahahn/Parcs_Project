@@ -131,8 +131,12 @@ for _ in range(n_submit):
         time = '3:00:00'
         job_name += 'short'
     else:
-        partition = 'bluemoon'
-        job_name += 'bluemoon'
+        if random.random() > .1:
+            partition = 'bluemoon'
+            job_name += 'bluemoon'
+        else:
+            partition = 'bigmem'
+            job_name += 'bigmem'
 
         time = '30:00:00'   
 

@@ -79,7 +79,7 @@ def main():
     extract_fs_rois('aparc')
     
     # Resave main data as numpy arrays
-    #resave_data()
+    resave_data()
     
 
 if __name__ == "__main__":

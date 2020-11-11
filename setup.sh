@@ -5,14 +5,14 @@
 #SBATCH --job-name=setup
 #SBATCH --output=Job_Logs/%x_%j.out
 #SBATCH --error=Job_Logs/%x_%j.err
-#SBATCH -n 4
+#SBATCH -n 32
 
 cd ${SLURM_SUBMIT_DIR}
 
 #python process_parcs.py
-python process_derivatives.py
+#python process_derivatives.py
 #python process_targets.py
 #python process_random_parcels.py
 #python setup_ML.py
-#python setup_alt_ML.py
+python setup_alt_ML.py
 

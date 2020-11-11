@@ -21,13 +21,23 @@ def main():
     # Limit to just train subjects
     ML.Load_Inclusions(loc='setup_ML_Logs/My_Exp/train_subjects.txt')
 
-    # Load Alternate Freesurfer Extracted ROIs
+    # Load Alternate Freesurfer Extracted Destre ROIs
     data = pd.read_csv('data/aparc.a2009s_rois.csv')
     data['src_subject_id'] = [s.replace('NDAR', 'NDAR_') for s in data['src_subject_id']]
 
     ML.Load_Data(df=data,
                  inclusion_keys=['_thickavg', '_surfarea', '_meancurv'],
-                 drop_na=False)
+                 drop_na=False,
+                 ext='-DESTR')
+
+    # Now load desikan ROIs
+    data = pd.read_csv('data/aparc_rois.csv')
+    data['src_subject_id'] = [s.replace('NDAR', 'NDAR_') for s in data['src_subject_id']]
+
+    ML.Load_Data(df=data,
+                 inclusion_keys=['_thickavg', '_surfarea', '_meancurv'],
+                 drop_na=False,
+                 ext='-DESIKAN')
 
     # Need to line up with other
     ML.Prepare_All_Data(merge='outer')
@@ -46,7 +56,7 @@ def main():
                                 flush=True)
 
     # Save ML object
-    ML.Save('data/Alt.ML', low_memory=True)
+    ML.Save('data/Alt2.ML', low_memory=True)
 
 if __name__ == '__main__':
     main()
