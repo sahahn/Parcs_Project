@@ -56,7 +56,7 @@ def main():
                                 flush=True)
 
     # Save ML object
-    ML.Save('data/Alt2.ML', low_memory=True)
+    ML.Save('data/Alt.ML', low_memory=True)
 
 if __name__ == '__main__':
     main()

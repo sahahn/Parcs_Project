@@ -116,8 +116,8 @@ for _ in range(n_submit):
 
     # Set job memory
     if parcel in hi_mem:
-        mem_per_cpu = '8G'
-        mem = int(cores * 5)
+        mem_per_cpu = '4G'
+        mem = int(cores * 4)
         job_name += 'high_'
         
     else:
@@ -131,14 +131,15 @@ for _ in range(n_submit):
         time = '3:00:00'
         job_name += 'short'
     else:
-        if random.random() > .1:
-            partition = 'bluemoon'
-            job_name += 'bluemoon'
-        else:
-            partition = 'bigmem'
-            job_name += 'bigmem'
+        #partition = 'bluemoon'
+        #job_name += 'bluemoon'
+        #time = '30:00:00'
 
-        time = '30:00:00'   
+        # TEMP SUBMIT ALL TO SHORT! - But force to EXTRA
+        partition = 'short'
+        time = '3:00:00'
+        job_name += 'short'
+        extra.add(parcel)
 
     # Proc if in extra, set higher scale
     if parcel in extra:
@@ -148,7 +149,7 @@ for _ in range(n_submit):
         scale = 6
 
     # Sbatch commands
-    cmd = 'sbatch --mem-per-cpu=' + mem_per_cpu + ' '
+    cmd = 'sbatch --mem=' + mem_per_cpu + ' '
     cmd += '--job-name=' + job_name + ' '
     cmd += '--partition=' + partition + ' ' 
     cmd += '--time=' + time + ' '
@@ -167,7 +168,6 @@ for _ in range(n_submit):
     # Submit job and print
     os.system(cmd)
     print('Submitted: ', cmd, flush=True)
-
 
 # Once done submitting
 clean_cache(dr=dr, scratch_dr='/users/s/a/sahahn/scratch/')

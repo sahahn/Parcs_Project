@@ -2,7 +2,6 @@
 
 #SBATCH --output=Job_Logs/%x_%j.out
 #SBATCH --error=Job_Logs/%x_%j.err
-#SBATCH --ntasks=1
 
 cd ${SLURM_SUBMIT_DIR}
 
