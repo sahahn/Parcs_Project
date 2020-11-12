@@ -116,8 +116,8 @@ for _ in range(n_submit):
 
     # Set job memory
     if parcel in hi_mem:
-        mem_per_cpu = '4G'
-        mem = int(cores * 4)
+        mem_per_cpu = '6G'
+        mem = int(cores * 5)
         job_name += 'high_'
         
     else:
@@ -131,15 +131,15 @@ for _ in range(n_submit):
         time = '3:00:00'
         job_name += 'short'
     else:
-        #partition = 'bluemoon'
-        #job_name += 'bluemoon'
-        #time = '30:00:00'
+        partition = 'bluemoon'
+        job_name += 'bluemoon'
+        time = '30:00:00'
 
         # TEMP SUBMIT ALL TO SHORT! - But force to EXTRA
-        partition = 'short'
-        time = '3:00:00'
-        job_name += 'short'
-        extra.add(parcel)
+        #partition = 'short'
+        #time = '3:00:00'
+        #job_name += 'short'
+        #extra.add(parcel)
 
     # Proc if in extra, set higher scale
     if parcel in extra:
