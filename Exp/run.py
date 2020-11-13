@@ -108,6 +108,14 @@ for _ in range(n_submit):
             for random_state in range(0, 50):
                 extra.add('random_' + str(size) + '_' + str(random_state))
 
+    if model == 'svm':
+        extra.add('glasser_abox')
+        extra.add('schaefer_700')
+        
+        for size in [700]:
+            for random_state in range(0, 50):
+                extra.add('random_' + str(size) + '_' + str(random_state))
+
     # Job name gets filled in
     job_name = ''
 
@@ -116,7 +124,7 @@ for _ in range(n_submit):
 
     # Set job memory
     if parcel in hi_mem:
-        mem_per_cpu = '6G'
+        mem_per_cpu = '7G'
         mem = int(cores * 5)
         job_name += 'high_'
         
@@ -131,9 +139,13 @@ for _ in range(n_submit):
         time = '3:00:00'
         job_name += 'short'
     else:
-        partition = 'bluemoon'
-        job_name += 'bluemoon'
-        time = '30:00:00'
+
+        # For now.. just skip
+        continue
+
+        #partition = 'bluemoon'
+        #job_name += 'bluemoon'
+        #time = '30:00:00'
 
         # TEMP SUBMIT ALL TO SHORT! - But force to EXTRA
         #partition = 'short'
@@ -143,7 +155,7 @@ for _ in range(n_submit):
 
     # Proc if in extra, set higher scale
     if parcel in extra:
-        scale = 8
+        scale = 12
         job_name += '_extra'
     else:
         scale = 6
