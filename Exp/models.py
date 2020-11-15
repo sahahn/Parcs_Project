@@ -71,7 +71,8 @@ def get_pipe(model_str, parcel, cv=None, dask_ip=None):
     elif model_str == 'svm':
 
         feat_selector =\
-            Feat_Selector('univariate selection', params=2)
+            [Feat_Selector('variance threshold'),
+             Feat_Selector('univariate selection', params=2)]
 
         nested_svm_pipe =\
             Model_Pipeline(imputers=None,

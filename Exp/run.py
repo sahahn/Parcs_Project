@@ -3,6 +3,23 @@ import sys
 from helpers import get_choice, clean_cache
 import random
 
+def is_binary(target):
+
+    binary = ['devhx_distress_at_birth_binary', 'ksads_back_c_det_susp_p',
+              'screentime_weekend_p_binary',
+              'prodrom_psych_ss_severity_score_binary', 'married.bl',
+              'asr_scr_thought_r_binary', 'accult_phenx_q2_p', 'devhx_5_twin_p',
+              'ksads_adhd_composite_binary',
+              'devhx_18_mnths_breast_fed_p_binary', 'sex_at_birth',
+              'devhx_ss_marijuana_amt_p_binary', 'devhx_ss_alcohol_avg_p_binary',
+              'ksads_bipolar_composite_binary', 'devhx_6_pregnancy_planned_p',
+              'devhx_mother_probs_binary', 'screentime_week_p_binary',
+              'devhx_12a_born_premature_p', 'devhx_15_days_incubator_p_binary',
+              'ksads_back_c_mh_sa_p', 'sleep_ss_total_p_binary',
+              'cbcl_scr_syn_aggressive_r_binary', 'ksads_OCD_composite_binary']
+
+    return target in binary
+
 # Main directory
 dr = '/users/s/a/sahahn/Parcs_Project/'
 
@@ -11,7 +28,14 @@ try:
 except IndexError:
     n_submit = 1
 
-for _ in range(n_submit):
+
+submitted = 0
+trys = 0
+
+
+while submitted < n_submit and trys < 30:
+
+    trys += 1
 
     # Get parcel, model, target to run
     parcel, model, target, save_loc = get_choice(dr)
@@ -83,13 +107,27 @@ for _ in range(n_submit):
             for random_state in range(0, 50):
                 short.add('random_' + str(size) + '_' + str(random_state))
 
-    # Add up to 500 if SVM - might be playing it too close
-    if model == 'svm':
+    if model == 'lgbm' and is_binary(target):
+        short.remove('schaefer_500')
+
+        for random_state in range(0, 50):
+            short.remove('random_500_' + str(random_state))
+
+    # Add up to 500 if SVM - only regression
+    if model == 'svm' and not is_binary(target):
         short.add('schaefer_500')
         for random_state in range(0, 50):
             short.add('random_500_' + str(random_state))
 
-    if model == 'elastic':
+    # Remove 400 if svm and binary
+    if model == 'svm' and is_binary(target):
+        short.remove('schaefer_400')
+        short.remove('glasser_abox')
+        for random_state in range(0, 50):
+            short.remove('random_400_' + str(random_state))
+
+    # Add 1k to elastic only if not binary
+    if model == 'elastic' and not is_binary(target):
         short.add('schaefer_1000')
         for random_state in range(0, 50):
             short.add('random_1000_' + str(random_state))
@@ -115,6 +153,8 @@ for _ in range(n_submit):
         for size in [700]:
             for random_state in range(0, 50):
                 extra.add('random_' + str(size) + '_' + str(random_state))
+
+    
 
     # Job name gets filled in
     job_name = ''
@@ -180,6 +220,11 @@ for _ in range(n_submit):
     # Submit job and print
     os.system(cmd)
     print('Submitted: ', cmd, flush=True)
+
+    submitted += 1
+
+if trys >= 30:
+    print('No more short jobs found!', flush=True)
 
 # Once done submitting
 clean_cache(dr=dr, scratch_dr='/users/s/a/sahahn/scratch/')
