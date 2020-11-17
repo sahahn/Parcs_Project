@@ -86,7 +86,6 @@ def load_target_names(dr):
 
     return targets
 
-
 def get_choice(dr):
 
     # Parcels
@@ -107,7 +106,7 @@ def get_choice(dr):
     # Generate list of all valid choices
     all_choices = []
 
-    for parcel in parcels[:20]:
+    for parcel in parcels[20:45]:
         for model in models:
             for target in targets:
                 

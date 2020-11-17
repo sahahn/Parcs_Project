@@ -1,4 +1,3 @@
-from sklearn.linear_model import ElasticNetCV
 from BPt.extensions import SurfLabels
 from BPt import (Model, Model_Pipeline, Scaler,
                  Loader, Param_Search, Feat_Selector,
@@ -11,7 +10,7 @@ def get_random_stacked(model_str, parcel, cv=None, dask_ip=None):
                                       n_iter=60,
                                       splits=3,
                                       n_repeats=1)
-    stack_model = Model('elastic', params=1, param_search=stack_param_search)
+    stack_model = Model('ridge', params=1, param_search=stack_param_search)
 
     stack_splits = CV_Splits(cv=cv, splits=5, n_repeats=1)
 
@@ -47,7 +46,7 @@ def get_pipe(model_str, parcel, cv=None, dask_ip=None):
 
     # Define loader with cache
     rois = SurfLabels(labels='/users/s/a/sahahn/Parcs_Project/parcels/' + parcel + '.npy')
-    loader = Loader(rois, cache_loc='/users/s/a/sahahn/scratch/cache3/' + parcel)
+    loader = Loader(rois, cache_loc='/users/s/a/sahahn/scratch/cache2/' + parcel)
 
     base_param_search =\
         Param_Search(search_type='RandomSearch', n_iter=60,

@@ -10,7 +10,7 @@
 #SBATCH --ntasks-per-node=1 
 #SBATCH --cpus-per-task=8
 
-#SBATCH --array=1-10
+#SBATCH --array=1-60
 
 export OMP_NUM_THREADS=1
 
