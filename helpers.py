@@ -142,3 +142,123 @@ def extract_rois(loc):
                     nm = prepend + feat+'_'+header[i]
                     d[nm.lower()] = values[i]
         return d
+
+def surf_to_surf(in_loc, hemi, cmd_type='-metric-resample'):
+    '''Or cmd_type as -label-resample, don't think will be used though'''
+    
+    cwd = os.getcwd()
+
+    # Convert to correct space
+    std_mesh_dr = '/home/sage/Parcs_Project/raw/standard_mesh_atlases/'
+    r_dr = os.path.join(std_mesh_dr, 'resample_fsaverage')
+    
+    output_loc = os.path.join(cwd, hemi + '.temp.label.gii')
+
+    cmd = 'wb_command ' + cmd_type + ' '
+    cmd += in_loc + ' '
+    cmd += os.path.join(r_dr, 'fsaverage_std_sphere.' + hemi + '.164k_fsavg_' + hemi + '.surf.gii') + ' '
+    cmd += os.path.join(r_dr, 'fs_LR-deformed_to-fsaverage.' + hemi + '.sphere.32k_fs_LR.surf.gii') + ' '
+    cmd += 'ADAP_BARY_AREA '
+    cmd += output_loc + ' '
+    cmd += '-area-metrics '
+    cmd += os.path.join(r_dr, 'fsaverage.' + hemi + '.midthickness_va_avg.164k_fsavg_' + hemi + '.shape.gii') + ' '
+    cmd += os.path.join(r_dr, 'fs_LR.' + hemi + '.midthickness_va_avg.32k_fs_LR.shape.gii')
+    
+    os.system(cmd)
+    return output_loc
+
+def volume_to_surf(vol):
+    
+    cwd = os.getcwd()
+
+    temp_name = 'temp'
+    in_file_loc = os.path.join(cwd, temp_name + '.nii')
+    
+    # Save temp as input
+    nib.save(vol, in_file_loc)
+
+    matlab_bin = '/home/sage/Downloads/matlab/bin'
+    conv_script_loc = '/home/sage/CBIG/stable_projects/registration/Wu2017_RegistrationFusion/bin/standalone_scripts_for_MNI_fsaverage_projection/CBIG_RF_projectMNI2fsaverage.sh'
+
+    cmd = 'bash ' + conv_script_loc + ' -s ' + in_file_loc + ' -o ' + cwd + ' -m ' + matlab_bin
+
+    # Run the command
+    os.system(cmd)
+    os.remove(in_file_loc)
+
+    ext = '.allSub_RF_ANTs_MNI152_orig_to_fsaverage.nii.gz'
+    lh_loc = os.path.join(cwd, 'lh.' + temp_name + ext)
+    rh_loc = os.path.join(cwd, 'rh.' + temp_name + ext)
+    
+    # Need to convert to gifti
+    fs_cmd = 'source /home/sage/Downloads/freesurfer/SetUpFreeSurfer.sh'
+    
+    lh_gifti = 'L.' + temp_name + '.gii'
+    rh_gifti = 'R.' + temp_name + '.gii'
+
+    # Write full command to temp file and run
+    with open('temp.sh', 'w') as f:
+        f.write(fs_cmd + ' && ')
+        f.write('mri_convert ' + lh_loc + ' ' + lh_gifti + ' && ')
+        f.write('mri_convert ' + rh_loc + ' ' + rh_gifti)
+
+    os.system('bash temp.sh')
+    os.remove('temp.sh')
+    os.remove(lh_loc)
+    os.remove(rh_loc)
+    
+    # Convert to correct spaces
+    lh_loc = surf_to_surf(lh_gifti, 'L', '-metric-resample')
+    rh_loc = surf_to_surf(rh_gifti, 'R', '-metric-resample')
+    os.remove(lh_gifti)
+    os.remove(rh_gifti)
+    
+    lh = load_surf_data(lh_loc)
+    rh = load_surf_data(rh_loc)
+    
+    os.remove(lh_loc)
+    os.remove(rh_loc)
+    
+    return lh, rh
+
+def vol_labels_to_surf(vol):
+    
+    data = vol.get_fdata()
+    unique_parcels = np.unique(data)
+    surfs = []
+
+    for u in unique_parcels:
+        temp = np.zeros(data.shape)
+        temp[data == u] = 1
+        temp_as_vol = nib.Nifti1Image(temp, affine=vol.affine)
+
+        lh, rh = volume_to_surf(temp_as_vol)
+        surfs.append(np.concatenate([lh, rh]))
+
+    surfs = np.array(surfs)
+    
+    return np.argmax(surfs, axis=0)
+
+def prob_vol_labels_to_surf(vol):
+    
+    data = vol.get_fdata()
+    surfs = []
+    
+    for i in range(data.shape[-1]):
+        temp_as_vol = nib.Nifti1Image(data[:,:,:,i], affine=vol.affine)
+        
+        try:
+            lh, rh = volume_to_surf(temp_as_vol)
+        except:
+
+            for x in range(100):
+                print(i)
+                
+            continue
+        
+        # Only add if not all 0's
+        if not ((lh == 0).all() and (rh == 0).all()):
+            surfs.append(np.concatenate([lh, rh]))
+    
+    # Return as vertex by maps
+    return np.swapaxes(np.array(surfs), 0, 1)

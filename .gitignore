@@ -7,6 +7,8 @@ Job_Logs
 *.ipynb
 *.pyc
 
+raw/difumo/*
 train_subjects.txt
 test_subjects.txt
 core.*
+AutogluonModels
