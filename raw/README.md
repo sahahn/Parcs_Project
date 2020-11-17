@@ -89,14 +89,47 @@ Example files paths:
 
 -------------------
 
+### mist
+
+The following folder was downloaded from https://figshare.com/articles/MIST_A_multi-resolution_parcellation_of_functional_networks/5633638
+The parcellations are then re-sampled from this original volumetric space.
+
+-------------------
+
+### difumo
+
+The following folder was downloaded from https://parietal-inria.github.io/DiFuMo/
+Note: this folder was rather large so it was not included, but the following files were downloaded (and renamed!)
+They represent the highest resolution avaliable for each of the scales of parcellations.
+The parcellations are then re-sampled from this original volumetric space.
+
+-raw/difumo/64.nii.gz
+-raw/difumo/128.nii.gz
+-raw/difumo/256.nii.gz
+-raw/difumo/512.nii.gz
+-raw/difumo/1024.nii.gz
+
+-------------------
+
+### brainnetome
+
+The 1mm volumetric brainnetome atlas was downloaded from http://www.brainnetome.org/resource/
+
+
+### shen
+
+Two shen volumetric parcellations are downloaded from https://www.nitrc.org/frs/download.php/11629/shen_368.zip and https://github.com/canlab/Neuroimaging_Pattern_Masks/tree/master/Atlases_and_parcellations/2013_Shen_Constable_NIMG_268_parcellation
+
+The two downloaded files are both volumetric (and later re-sampled), one (newer) has 268 parcels and the (older) 268.
+
+-------------------
+
 ### standard_mesh_atlases
 
-Downloaded from http://brainvis.wustl.edu/workbench/standard_mesh_atlases.zip only the files:
+Downloaded from http://brainvis.wustl.edu/workbench/standard_mesh_atlases.zip
 
-- raw/standard_mesh_atlases/L.sphere.32k_fs_LR.surf.gii
-- raw/standard_mesh_atlases/R.sphere.32k_fs_LR.surf.gii
-
-Are used. They are used to generate new random parcellations.
+These files are used to generate new random parcellations and during resampling from
+volumetric to LR_fs_32k space.
 
 ----------------------
 
@@ -104,3 +137,4 @@ Are used. They are used to generate new random parcellations.
 
 Downloaded from https://github.com/ThomasYeoLab/CBIG/tree/master/data/templates/surface/fs_LR_32k/label
 Includes only the medialwall.annot file. This is a mask with 0's indicating where in the fs_LR_32k space there is medial wall.
+
