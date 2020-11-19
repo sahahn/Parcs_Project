@@ -1,6 +1,6 @@
 # raw
 
-The raw folder contains all of the different data sources referenced for this project. Donwloads were made around 10/10/2020. 
+The raw folder contains all of the different data sources referenced for this project. Donwloads were made in Novemember 2020.
 
 The following sections describe the contents of each folder (note: that some cannot be uploaded due to data use agreements)
 
@@ -99,7 +99,7 @@ The parcellations are then re-sampled from this original volumetric space.
 ### difumo
 
 The following folder was downloaded from https://parietal-inria.github.io/DiFuMo/
-Note: this folder was rather large so it was not included, but the following files were downloaded (and renamed!)
+Note: this folder was rather large so it was not uploaded to this git, but the following files were downloaded (and renamed!)
 They represent the highest resolution avaliable for each of the scales of parcellations.
 The parcellations are then re-sampled from this original volumetric space.
 
@@ -124,12 +124,55 @@ The two downloaded files are both volumetric (and later re-sampled), one (newer)
 
 -------------------
 
+### yeo
+
+The two yeo 7 networks and 17 networks parcellations were downloaded from:
+https://github.com/ThomasYeoLab/CBIG/tree/master/stable_projects/brain_parcellation/Yeo2011_fcMRI_clustering/1000subjects_reference/Yeo_JNeurophysiol11_SplitLabels/fs_LR32k
+
+
+-------------------
+
+
+### maps_and_parcs
+
+Five different parcellations, economo, economo7, mesulam, oasis.chubs and shj were downloaded from
+https://github.com/ucam-department-of-psychiatry/maps_and_parcs/Parcellations/FSAverage/
+These parcellations are downloaded in fsaverage space seperate for left and right hemispheres.
+
+-------------------
+
+### multi_atlas
+
+Two parcellations, aicha and spn500, were downloaded from https://github.com/faskowit/multiAtlasTT/tree/master/atlas_data
+with each parcellation within its own folders, but extracted here.
+These parcellations were downloaded in fsaverage space seperate for left and right hemispheres.
+
+-------------------
+
+### neuro_parc
+
+Eight volumetric parcellations were downloaded from https://github.com/neurodata/neuroparc/tree/master/atlases
+
+These have not been added to the git due to space, but the following files were downloaded:
+
+- raw/neuro_parc/CAPRSC_space-MNI152NLin6_res-1x1x1.nii.gz
+- raw/neuro_parc/CPAC200_space-MNI152NLin6_res-1x1x1.nii.gz
+- raw/neuro_parc/Hammersmith_space-MNI152NLin6_res-1x1x1.nii.gz
+- raw/neuro_parc/JHU_space-MNI152NLin6_res-1x1x1.nii.gz
+- raw/neuro_parc/Juelich_space-MNI152NLin6_res-1x1x1.nii.gz
+- raw/neuro_parc/MICCAI_space-MNI152NLin6_res-1x1x1.nii.gz
+- raw/neuro_parc/Princetonvisual-top_space-MNI152NLin6_res-1x1x1.nii.gz
+- raw/neuro_parc/Slab907_space-MNI152NLin6_res-1x1x1.nii.gz
+- raw/neuro_parc/Slab1068_space-MNI152NLin6_res-1x1x1.nii.gz
+
+-------------------
+
 ### standard_mesh_atlases
 
 Downloaded from http://brainvis.wustl.edu/workbench/standard_mesh_atlases.zip
 
 These files are used to generate new random parcellations and during resampling from
-volumetric to LR_fs_32k space.
+fsaverage to LR_fs_32k standard space.
 
 ----------------------
 
@@ -137,4 +180,10 @@ volumetric to LR_fs_32k space.
 
 Downloaded from https://github.com/ThomasYeoLab/CBIG/tree/master/data/templates/surface/fs_LR_32k/label
 Includes only the medialwall.annot file. This is a mask with 0's indicating where in the fs_LR_32k space there is medial wall.
+
+
+
+
+
+
 
