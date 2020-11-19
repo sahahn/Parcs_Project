@@ -4,6 +4,10 @@ It is common to analyze surface-based neuroimaging data, and likewise for a numb
 
 The base experiment conducted within this project is a systematic test of different pre-defined parcellations performance. There are some key decision though which greatly influence the experiment.
 
+-----
+
+### Directory structure
+
 
 -----
 

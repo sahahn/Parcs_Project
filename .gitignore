@@ -12,3 +12,5 @@ train_subjects.txt
 test_subjects.txt
 core.*
 AutogluonModels
+parcels/*_prob.npy
+neuro_parc
