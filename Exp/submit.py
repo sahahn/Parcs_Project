@@ -13,9 +13,10 @@ def evaluate(args, n_jobs, dask_ip=None):
 
         # Save current time to indicate job is started
         np.save(args['save_loc'], np.array([time.time()]))
+        os.chmod(args['save_loc'], 0o777) 
 
         # Load the ML object
-        ML = Load('/users/s/a/sahahn/Parcs_Project/data/Base.ML',
+        ML = Load('/users/s/a/sahahn/Parcs_Project/data/Base_consol.ML',
                 log_dr=None, notebook=False)
         ML.n_jobs = n_jobs
         ML.mp_context = 'loky'
@@ -45,6 +46,7 @@ def evaluate(args, n_jobs, dask_ip=None):
         # Save scores, indicating this job is done
         scores = np.array(results['summary_scores'])
         np.save(args['save_loc'], scores)
+        os.chmod(args['save_loc'], 0o777) 
 
     except Exception as e:
 

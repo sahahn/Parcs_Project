@@ -106,7 +106,7 @@ def get_choice(dr):
     # Generate list of all valid choices
     all_choices = []
 
-    for parcel in parcels[20:45]:
+    for parcel in parcels:
         for model in models:
             for target in targets:
                 

@@ -2,6 +2,7 @@ import os
 import sys
 from helpers import get_choice, clean_cache
 import random
+import numpy as np
 
 def is_binary(target):
 
@@ -28,10 +29,8 @@ try:
 except IndexError:
     n_submit = 1
 
-
 submitted = 0
 trys = 0
-
 
 while submitted < n_submit and trys < 30:
 
@@ -41,120 +40,50 @@ while submitted < n_submit and trys < 30:
     parcel, model, target, save_loc = get_choice(dr)
     if parcel is None:
         break
-
-    # Base parcs that need high mem
-    hi_mem = set(['icosahedron-1002_dlab',
-                  'icosahedron-1442_dlab',
-                  'schaefer_800',
-                  'schaefer_900',
-                  'schaefer_1000'])
-
-    # Add random
-    for size in [800, 900, 1000]:
-        for random_state in range(0, 50):
-            hi_mem.add('random_' + str(size) + '_' + str(random_state))
-
-    # If lgbm or svm
-    if model in set(['lgbm', 'svm']):
-        hi_mem.add('icosahedron-642_dlab')
-        hi_mem.add('schaefer_500')
-        hi_mem.add('schaefer_600')
-        hi_mem.add('schaefer_700')
-
-        for size in [500, 600, 700]:
-            for random_state in range(0, 50):
-                hi_mem.add('random_' + str(size) + '_' + str(random_state))
-
-    # Base parcs that can run short
-    short = set(['schaefer_100',
-                 'schaefer_200',
-                 'schaefer_300',
-                 'schaefer_400',
-                 'icosahedron-42_dlab',
-                 'vdg11b',
-                 'brodmann',
-                 'power2011_dlab',
-                 'fan_abox',
-                 'dextrieux_dlab',
-                 'destrieux_abox',
-                 'glasser_abox',
-                 'gordon',
-                 'baldassano_abox',
-                 'yeo_abox',
-                 'aal_abox',
-                 'shen_abox',
-                 'desikan_dlab',
-                 'desikan_abox',
-                 'gordon_abox',
-                 ])
-
-    # Add random
-    for size in [100, 200, 300, 400]:
-        for random_state in range(0, 50):
-            short.add('random_' + str(size) + '_' + str(random_state))
-
-    # If elastic or lgbm, extra short
-    if model in set(['elastic', 'lgbm']):
-        short.add('schaefer_500')
-        short.add('schaefer_600')
-        short.add('schaefer_700')
-        short.add('schaefer_800')
-        short.add('schaefer_900')
-        short.add('icosahedron-642_dlab')
-        short.add('icosahedron-362_dlab')
-
-        for size in [500, 600, 700, 800, 900]:
-            for random_state in range(0, 50):
-                short.add('random_' + str(size) + '_' + str(random_state))
-
-    if model == 'lgbm' and is_binary(target):
-        short.remove('schaefer_500')
-
-        for random_state in range(0, 50):
-            short.remove('random_500_' + str(random_state))
-
-    # Add up to 500 if SVM - only regression
-    if model == 'svm' and not is_binary(target):
-        short.add('schaefer_500')
-        for random_state in range(0, 50):
-            short.add('random_500_' + str(random_state))
-
-    # Remove 400 if svm and binary
-    if model == 'svm' and is_binary(target):
-        short.remove('schaefer_400')
-        short.remove('glasser_abox')
-        for random_state in range(0, 50):
-            short.remove('random_400_' + str(random_state))
-
-    # Add 1k to elastic only if not binary
-    if model == 'elastic' and not is_binary(target):
-        short.add('schaefer_1000')
-        for random_state in range(0, 50):
-            short.add('random_1000_' + str(random_state))
-
-    # Extra scaled paritions - for all
-    extra = set(['icosahedron-1002_dlab',
-                 'icosahedron-1442_dlab'])
-
-    # Extra for svm and lgbm
-    if model in set(['svm', 'lgbm']):
-        extra.add('schaefer_800')
-        extra.add('schaefer_900')
-        extra.add('schaefer_1000')
-
-        for size in [800, 900, 1000]:
-            for random_state in range(0, 50):
-                extra.add('random_' + str(size) + '_' + str(random_state))
-
-    if model == 'svm':
-        extra.add('glasser_abox')
-        extra.add('schaefer_700')
-        
-        for size in [700]:
-            for random_state in range(0, 50):
-                extra.add('random_' + str(size) + '_' + str(random_state))
-
     
+    # Get parcel size
+    parcel_size = len(np.unique(np.load('../parcels/' + parcel + '.npy')))
+
+    # Set if needs high memory
+    hi_mem = False
+
+    if parcel_size >= 800:
+        hi_mem = True
+
+    if model in set(['lgbm', 'svm']) and parcel_size >= 500:
+        hi_mem = True
+
+    # Set if needs short queue
+    short = True
+
+    if parcel_size >= 550:
+        short = False
+
+    if model == 'svm' and parcel_size >= 350 and is_binary(target):
+        short = False
+
+    if model == 'lgbm' and parcel_size < 1000 and not is_binary(target):
+        short = True
+
+    if model == 'elastic' and parcel_size <= 1000:
+        short = True
+
+    if model == 'elastic' and parcel_size <= 1500 and not is_binary(target):
+        short = True
+
+    # Set extra
+    extra = False
+
+    # If between 200 and 550 and svm, set extra
+    if parcel_size >= 200 and parcel_size < 550 and model == 'svm':
+        extra = True
+
+    if parcel_size >= 500 and model == 'lgbm' and is_binary(target):
+        extra = True
+
+    # ONLY RUNNING WITH SHORT QUEUE
+    if not short:
+        continue
 
     # Job name gets filled in
     job_name = ''
@@ -163,38 +92,22 @@ while submitted < n_submit and trys < 30:
     cores = 4
 
     # Set job memory
-    if parcel in hi_mem:
+    if hi_mem:
         mem_per_cpu = '7G'
         mem = int(cores * 5)
         job_name += 'high_'
-        
     else:
         mem_per_cpu = '4G'
         mem = int(cores * 2)
         job_name += 'low_'
 
-    # Set parition
-    if parcel in short:
-        partition = 'short'
-        time = '3:00:00'
-        job_name += 'short'
-    else:
-
-        # For now.. just skip
-        continue
-
-        #partition = 'bluemoon'
-        #job_name += 'bluemoon'
-        #time = '30:00:00'
-
-        # TEMP SUBMIT ALL TO SHORT! - But force to EXTRA
-        #partition = 'short'
-        #time = '3:00:00'
-        #job_name += 'short'
-        #extra.add(parcel)
+    # Always short - for now
+    partition = 'short'
+    time = '3:00:00'
+    job_name += 'short'
 
     # Proc if in extra, set higher scale
-    if parcel in extra:
+    if extra:
         scale = 12
         job_name += '_extra'
     else:
@@ -217,11 +130,12 @@ while submitted < n_submit and trys < 30:
     cmd += str(cores) + ' '
     cmd += str(scale) + ' '
 
-    # Submit job and print
+    # Submit job
     os.system(cmd)
-    print('Submitted: ', cmd, flush=True)
-
     submitted += 1
+
+    print('Submitted: ', cmd, flush=True)
+    
 
 if trys >= 30:
     print('No more short jobs found!', flush=True)

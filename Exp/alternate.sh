@@ -11,6 +11,7 @@
 #SBATCH --cpus-per-task=16
 
 export OMP_NUM_THREADS=1
+source /users/s/a/sahahn/.bashrc
 
 cd ${SLURM_SUBMIT_DIR}
 

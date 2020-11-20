@@ -2,7 +2,7 @@
 #SBATCH --partition=bluemoon
 #SBATCH --time=30:00:00
 #SBATCH --mem=12G
-#SBATCH --job-name=alt_run_12
+#SBATCH --job-name=12
 #SBATCH --output=Job_Logs/%x_%j.out
 #SBATCH --error=Job_Logs/%x_%j.err
 
@@ -13,6 +13,7 @@
 #SBATCH --array=1-200
 
 export OMP_NUM_THREADS=1
+source /users/s/a/sahahn/.bashrc
 
 cd ${SLURM_SUBMIT_DIR}
 
