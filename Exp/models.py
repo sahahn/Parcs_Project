@@ -1,7 +1,8 @@
-from BPt.extensions import SurfLabels
+from BPt.extensions import SurfLabels, SurfMaps
 from BPt import (Model, Model_Pipeline, Scaler,
                  Loader, Param_Search, Feat_Selector,
                  CV_Splits, Ensemble)
+import numpy as np
 
 
 def get_random_stacked(model_str, parcel, cv=None, dask_ip=None):
@@ -44,8 +45,13 @@ def get_pipe(model_str, parcel, cv=None, dask_ip=None):
     if parcel.startswith('stacked_random'):
         return get_random_stacked(model_str, parcel, cv=cv, dask_ip=dask_ip)
 
-    # Define loader with cache
-    rois = SurfLabels(labels='/users/s/a/sahahn/Parcs_Project/parcels/' + parcel + '.npy')
+    # Set as either SurfMaps or SurfLabels, depending on type of parcel / map
+    parc_loc = '../parcels/' + parcel + '.npy'
+    if len(np.load(parc_loc).shape) == 2:
+        rois = SurfMaps(maps=parc_loc)
+    else:
+        rois = SurfLabels(labels=parc_loc)
+
     loader = Loader(rois, cache_loc='/users/s/a/sahahn/scratch/cache1/' + parcel)
 
     base_param_search =\

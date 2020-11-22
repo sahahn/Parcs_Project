@@ -10,7 +10,7 @@
 #SBATCH --ntasks-per-node=1 
 #SBATCH --cpus-per-task=8
 
-#SBATCH --array=1-400
+#SBATCH --array=1-300
 
 export OMP_NUM_THREADS=1
 source /users/s/a/sahahn/.bashrc

@@ -42,7 +42,11 @@ while submitted < n_submit and trys < 30:
         break
     
     # Get parcel size
-    parcel_size = len(np.unique(np.load('../parcels/' + parcel + '.npy')))
+    p = np.load('../parcels/' + parcel + '.npy')
+    if len(p.shape) == 2:
+        parcel_size = p.shape[1]
+    else:
+        parcel_size = len(np.unique(p))
 
     # Set if needs high memory
     hi_mem = False
