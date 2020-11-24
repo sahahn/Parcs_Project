@@ -1,4 +1,3 @@
-from sys import setcheckinterval
 import numpy as np
 import nibabel as nib
 import os
