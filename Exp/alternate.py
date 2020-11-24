@@ -22,9 +22,6 @@ def main():
                 # Get pipe
                 pipeline = get_pipe(model, '', cv=cv, dask_ip=None)
 
-                # No loader
-                pipeline.loaders = None
-
                 # Have to set Imputer, just use mean imputer
                 pipeline.imputers = Imputer('mean')
                 

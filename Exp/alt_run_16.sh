@@ -2,7 +2,7 @@
 #SBATCH --partition=bluemoon
 #SBATCH --time=30:00:00
 #SBATCH --mem=16G
-#SBATCH --job-name=test
+#SBATCH --job-name=last
 #SBATCH --output=Job_Logs/%x_%j.out
 #SBATCH --error=Job_Logs/%x_%j.err
 
@@ -10,7 +10,7 @@
 #SBATCH --ntasks-per-node=1 
 #SBATCH --cpus-per-task=16
 
-#SBATCH --array=1-400
+#SBATCH --array=1-10
 
 export OMP_NUM_THREADS=1
 source /users/s/a/sahahn/.bashrc

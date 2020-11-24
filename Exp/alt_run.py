@@ -9,7 +9,7 @@ import random
 n_jobs = int(list(sys.argv)[1])
 
 # Stagger jobs a little
-time.sleep(random.random() * 10)
+time.sleep(random.random() * 30)
 
 dr = '/users/s/a/sahahn/Parcs_Project/'
 

@@ -1,6 +1,0 @@
-Error with: hcp_mmp---svm---nihtbx_picvocab_uncorrected CancelledError('ng_cv_score-de3a29436718429411749a83478a857f')
-Error with: random_1000_4---lgbm---pea_wiscv_trs TerminatedWorkerError('A worker process managed by the executor was unexpectedly terminated. This could be caused by a segmentation fault while calling the function or by an excessive memory usage causing the Operating System to kill the worker.\n\nThe exit codes of the workers are {SIGBUS(-7)}')
-Error with: random_400_0---svm---cbcl_scr_syn_rulebreak_r CancelledError('ng_cv_score-45ac30162a616361781e574411bfa011')
-Error with: random_1000_4---lgbm---nihtbx_picvocab_uncorrected TerminatedWorkerError('A worker process managed by the executor was unexpectedly terminated. This could be caused by a segmentation fault while calling the function or by an excessive memory usage causing the Operating System to kill the worker.\n\nThe exit codes of the workers are {SIGBUS(-7)}')
-Error with: random_200_2---svm---ksads_back_c_det_susp_p PermissionError(13, 'Permission denied')
-Error with: random_700_0---svm---nihtbx_pattern_uncorrected PermissionError(13, 'Permission denied')

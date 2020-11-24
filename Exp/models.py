@@ -46,13 +46,17 @@ def get_pipe(model_str, parcel, cv=None, dask_ip=None):
         return get_random_stacked(model_str, parcel, cv=cv, dask_ip=dask_ip)
 
     # Set as either SurfMaps or SurfLabels, depending on type of parcel / map
-    parc_loc = '../parcels/' + parcel + '.npy'
-    if len(np.load(parc_loc).shape) == 2:
-        rois = SurfMaps(maps=parc_loc)
+    # or ''
+    if parcel == '':
+        loader = None
     else:
-        rois = SurfLabels(labels=parc_loc)
+        parc_loc = '../parcels/' + parcel + '.npy'
+        if len(np.load(parc_loc).shape) == 2:
+            rois = SurfMaps(maps=parc_loc)
+        else:
+            rois = SurfLabels(labels=parc_loc)
 
-    loader = Loader(rois, cache_loc='/users/s/a/sahahn/scratch/cache1/' + parcel)
+        loader = Loader(rois, cache_loc='/users/s/a/sahahn/scratch/cache1/' + parcel)
 
     base_param_search =\
         Param_Search(search_type='RandomSearch', n_iter=60,

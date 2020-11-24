@@ -57,7 +57,18 @@ def get_done(results_dr):
 
     for result in results:
         name = result.replace('.npy', '')
-        r = np.load(os.path.join(results_dr, result))
+
+        try:
+            r = np.load(os.path.join(results_dr, result))
+
+        # If value error when loading,
+        # means something is actively writing
+        # so treat as done
+        except ValueError:
+            done.add(name)
+
+            # Then skip rest of loop
+            continue
 
         # If done add to done
         if len(r) > 1:
