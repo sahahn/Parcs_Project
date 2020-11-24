@@ -90,7 +90,7 @@ def load_data(ML, show_dist=False):
             Writer = animation.writers['ffmpeg']
             writer = Writer(fps=2)
 
-            save_loc = 'setup_ML_Logs/' + name + '.mp4'
+            save_loc = 'setup_ML_Logs/Exp/' + name + '.mp4'
             anim.save(save_loc, dpi=500, writer=writer)
 
     return ML
