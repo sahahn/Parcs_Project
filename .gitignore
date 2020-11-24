@@ -14,3 +14,5 @@ core.*
 AutogluonModels
 parcels/*_prob.npy
 neuro_parc
+
+Test_Notebooks/

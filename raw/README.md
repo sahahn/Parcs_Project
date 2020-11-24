@@ -33,6 +33,7 @@ Due to data use agreements, this folder and the data within cannot be shared her
 
 This folder represents the DEAP rds version 2.0.1 as converted to a csv.
 Due to data use agreements, this folder and the data within cannot be shared here.
+In order to create this file, the rds was simply loaded as a dataframe in R and then saved as a csv. 
 
 ----------------
 
