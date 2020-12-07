@@ -11,11 +11,16 @@ geo = load_geo(standard_mesh_loc='../raw/standard_mesh_atlases/')
 medial_wall_mask =\
     load_medial_wall(annot_loc='../raw/fs_LR_32k_label/medialwall.annot')
 
-for size in range(100, 1001, 100):
-    for random_state in range(0, 5):
+# Set save dir
+save_dr = '../parcels/'
+#save_dr = '../extra_random_parcels/'
+os.makedirs(save_dr, exist_ok=True)
+
+for size in [2000]:
+    for random_state in range(0, 3):
 
         # Set save name
-        save_name = '../parcels/random_' + str(size) + '_' + str(random_state) + '.npy'
+        save_name = os.path.join(save_dr, 'random_' + str(size) + '_' + str(random_state) + '.npy')
 
         # Only generate if it doesn't already exist
         # Though random state should ensure that it is the same anyway

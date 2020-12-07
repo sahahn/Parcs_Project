@@ -13,7 +13,8 @@ def get_random_stacked(model_str, parcel, cv=None, dask_ip=None):
                                       n_repeats=1)
     stack_model = Model('ridge', params=1, param_search=stack_param_search)
 
-    stack_splits = CV_Splits(cv=cv, splits=5, n_repeats=1)
+    # Only do an internal 3-fold CV for generating predictions for stacking
+    stack_splits = CV_Splits(cv=cv, splits=3, n_repeats=1)
 
     parcel_size = parcel.split('_')[2]
     n_parcels = int(parcel.split('_')[3])
@@ -23,7 +24,9 @@ def get_random_stacked(model_str, parcel, cv=None, dask_ip=None):
     end = start + n_parcels
     base_parcels = ['random_' + parcel_size + '_' + str(n) for n in range(start, end)]
     
-    base_models = [Model(get_pipe(model_str, p, cv, dask_ip)) for p in base_parcels]
+    base_models = [Model(get_pipe(model_str, p,
+                                  cv, dask_ip,
+                                  stacking=parcel)) for p in base_parcels]
 
     stacking_ensemble = Ensemble(obj = "stacking regressor",
                                  models = base_models,
@@ -37,7 +40,7 @@ def get_random_stacked(model_str, parcel, cv=None, dask_ip=None):
     return pipeline
 
 
-def get_pipe(model_str, parcel, cv=None, dask_ip=None):
+def get_pipe(model_str, parcel, cv=None, dask_ip=None, stacking=None):
 
     print('Get pipeline with:', model_str,
            parcel, cv, dask_ip, flush=True)
@@ -50,21 +53,33 @@ def get_pipe(model_str, parcel, cv=None, dask_ip=None):
     if parcel == '':
         loader = None
     else:
-        parc_loc = '../parcels/' + parcel + '.npy'
+
+        # If not a sub stacking model
+        if stacking is None:
+
+            parc_loc = '../parcels/' + parcel + '.npy'
+            cache_loc= '/users/s/a/sahahn/scratch/cache1/' + parcel
+
+        # Otherwise, the name of the base stacking model,
+        # e.g., stacked_random_100_3_0 is passed as stacking
+        else:
+
+            parc_loc = '../extra_random_parcels/' + parcel + '.npy'
+            cache_loc='/users/s/a/sahahn/scratch/cache1/' + stacking + '/' + parcel
+            
+
         if len(np.load(parc_loc).shape) == 2:
             rois = SurfMaps(maps=parc_loc)
         else:
             rois = SurfLabels(labels=parc_loc)
 
-        loader = Loader(rois, cache_loc='/users/s/a/sahahn/scratch/cache1/' + parcel)
+        loader = Loader(rois, cache_loc=cache_loc)
 
     base_param_search =\
         Param_Search(search_type='RandomSearch', n_iter=60,
                      splits=3, n_repeats=1, cv=cv, dask_ip=dask_ip)
 
-
     if model_str == 'elastic':
-
         model = Model('elastic', params=1,
                       param_search=base_param_search,
                       extra_params={'tol': 1e-3})

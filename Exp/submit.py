@@ -38,10 +38,11 @@ def evaluate(args, n_jobs, dask_ip=None):
 
         # Evaluate this combination with 5 fold CV, two repeats
         results = ML.Evaluate(model_pipeline=pipeline,
-                                problem_spec=ps,
-                                splits=5,
-                                n_repeats=1,
-                                cv=cv)
+                              problem_spec=ps,
+                              splits=5,
+                              n_repeats=1,
+                              cv=cv,
+                              only_fold=args['split'])
 
         # Save scores, indicating this job is done
         scores = np.array(results['summary_scores'])

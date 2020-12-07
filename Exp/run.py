@@ -32,21 +32,34 @@ except IndexError:
 submitted = 0
 trys = 0
 
-while submitted < n_submit and trys < 30:
+max_trys = 10 * n_submit
+max_trys = min([max_trys, 30])
+
+while submitted < n_submit and trys < max_trys:
 
     trys += 1
 
     # Get parcel, model, target to run
-    parcel, model, target, save_loc = get_choice(dr)
+    parcel, model, target, split, save_loc = get_choice(dr)
     if parcel is None:
         break
     
     # Get parcel size
-    p = np.load('../parcels/' + parcel + '.npy')
-    if len(p.shape) == 2:
-        parcel_size = p.shape[1]
+    # If stacked... determine differently - NOTE may want to factor in the nested-ness...
+    if parcel.startswith('stacked_random'):
+        base_parcel_size = int(parcel.split('_')[2])
+        n_parcels = int(parcel.split('_')[3])
+        parcel_size = (base_parcel_size * n_parcels) + 100
+
+    # Otherwise load
     else:
-        parcel_size = len(np.unique(p))
+        p = np.load('../parcels/' + parcel + '.npy')
+        if len(p.shape) == 2:
+            parcel_size = p.shape[1]
+        else:
+            parcel_size = len(np.unique(p))
+
+    # NOTE - may want to change caclulations based on if split
 
     # Set if needs high memory
     hi_mem = False
@@ -97,7 +110,7 @@ while submitted < n_submit and trys < 30:
 
     # Set job memory
     if hi_mem:
-        mem_per_cpu = '7G'
+        mem_per_cpu = '8G'
         mem = int(cores * 5)
         job_name += 'high_'
     else:
@@ -128,6 +141,7 @@ while submitted < n_submit and trys < 30:
     cmd += parcel + ' '
     cmd += model + ' '
     cmd += target + ' '
+    cmd += str(split) + ' '
     cmd += save_loc + ' '
     cmd += str(mem) + ' '
     cmd += partition + ' '

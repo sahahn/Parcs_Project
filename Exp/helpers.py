@@ -6,8 +6,8 @@ import random
 import sys
 import shutil
 
-#models = ['elastic', 'lgbm', 'svm']
 models = ['elastic', 'lgbm', 'svm']
+split_if = ['stacked_random_', 'random_2000_']
 
 def clean_cache(dr, scratch_dr):
 
@@ -27,27 +27,44 @@ def clean_cache(dr, scratch_dr):
         parc = file.split('---')[0]
         model = file.split('---')[1]
         
+        # If this model is being considered
         if model in models:
+
+            # Load the result, have to check if it's actually done
             result = np.load(os.path.join(results_dr, file))
+
+            # If len is 4, then means this is just one repeat
+            if len(file.split('---')) == 4:
+                add = .2
+
+            # Otherwise it is all 5
+            else:
+                add = 1
         
             if len(result) > 1:
                 try:
-                    parcs_counts[parc] += 1
+                    parcs_counts[parc] += add
                 except KeyError:
-                    parcs_counts[parc] = 1
+                    parcs_counts[parc] = add
 
     all_parc_keys = list(parcs_counts)
     random.shuffle(all_parc_keys)
+
+    print('Checking for finished cached parcels!', flush=True)
     
     for end in ['' , '1', '2', '3', '4', '5']:
         dr = os.path.join(scratch_dr, 'cache' + end)
         if os.path.exists(dr):
             for parc in all_parc_keys:
+
                 if parcs_counts[parc] == total:
                     cache_dr = os.path.join(dr, parc)
                     if os.path.exists(cache_dr):
                         print('DELETE:', cache_dr, flush=True)
                         shutil.rmtree(cache_dr, ignore_errors=True)
+
+                else:
+                    print('Parcel:', parc, parcs_counts[parc], '/', total)
 
 def get_done(results_dr):
 
@@ -80,9 +97,13 @@ def get_done(results_dr):
 
     return done
 
-def get_name(parcel, model, target):
+def get_name(parcel, model, target, split=None):
 
     name = parcel + '---' + model + '---' + target
+
+    if split is not None:
+        name += '---' + str(split)
+
     return name
 
 def load_target_names(dr):
@@ -103,6 +124,12 @@ def get_choice(dr):
     parcel_dr = os.path.join(dr, 'parcels')
     parcels = [p.replace('.npy', '') for p in os.listdir(parcel_dr)]
 
+    # Add extra stacking parcels if any to run
+    for s in ['100', '200', '300']:
+        for n in ['3', '5']:
+            for r in ['0']:
+                parcels += ['stacked_random_' + s + '_' + n + '_' + r]
+
     # Load target names
     targets = load_target_names(dr)
 
@@ -118,14 +145,28 @@ def get_choice(dr):
     all_choices = []
 
     for parcel in parcels:
+        
+        # If this parcel gets splits
+        if any([parcel.startswith(s) for s in split_if]):
+            needs_split = True
+        else:
+            needs_split = False
+
         for model in models:
             for target in targets:
+
+                # If doesn't need split, names are just one
+                if not needs_split:
+                    names = [get_name(parcel, model, target)]
+                else:
+                    names = [get_name(parcel, model, target, split=s) 
+                             for s in range(5)]
                 
-                name = get_name(parcel, model, target)
-                
-                # Only add if not in done
-                if name not in done:
-                    all_choices.append(name)
+                # Add to choices
+                all_choices += names
+
+    # Remove done from all choices
+    all_choices = list(set(all_choices) - set(done))
 
     print('Remaining Choices:', len(all_choices), flush=True)
 
@@ -140,15 +181,23 @@ def get_choice(dr):
         parcel = name.split('---')[0]
         model = name.split('---')[1]
         target = name.split('---')[2]
+
+        # If needs split
+        if len(name.split('---')) == 4:
+            split = name.split('---')[3]
+        else:
+            split = None
+        
+        # Generate save loc
         save_loc = os.path.join(results_dr, name + '.npy')
 
-        print('Return pmt', parcel, model, target, flush=True)
+        print('Return pmt', parcel, model, target, split, flush=True)
 
         # Return this choice
-        return parcel, model, target, save_loc
+        return parcel, model, target, split, save_loc
 
-    # If done, return None
-    return None, None, None
+    # If done, return None's
+    return None, None, None, None, None
 
 def unpack_args():
 
@@ -157,11 +206,18 @@ def unpack_args():
     args = {'parcel': base[0],
             'model': base[1],
             'target': base[2],
-            'save_loc': base[3],
-            'memory': int(float(base[4])),
-            'partition': base[5],
-            'cores': int(float(base[6])),
-            'scale': int(float(base[7]))}
+            'split': base[3],
+            'save_loc': base[4],
+            'memory': int(float(base[5])),
+            'partition': base[6],
+            'cores': int(float(base[7])),
+            'scale': int(float(base[8]))}
+
+    # Proc split - if int or None
+    try:
+        args['split'] = int(float(args['split']))
+    except ValueError:
+        args['split'] = None
 
     # Set n jobs
     args['n_jobs'] = int(args['cores'] * args['scale'])
