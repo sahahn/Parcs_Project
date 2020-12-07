@@ -38,9 +38,9 @@ def resave_data():
     os.makedirs(save_dr, exist_ok=True)
 
     stubs = {'_curv.dscalar.nii' : 'curv',
-            '_myelinmap.dscalar.nii': 'myelin',
-            '_sulc.dscalar.nii' : 'sulc',
-            '_thickness.dscalar.nii': 'thick'}
+             '_myelinmap.dscalar.nii': 'myelin',
+             '_sulc.dscalar.nii' : 'sulc',
+             '_thickness.dscalar.nii': 'thick'}
 
     base = '../raw/derivatives/abcd-hcp-pipeline/'
     base += 'sub-*/ses-baselineYear1Arm1/anat/'
@@ -54,9 +54,11 @@ def resave_data():
         # Load the data in full space
         data = conv_to_array_32k_space(file)
         
-        # Re-save the data as a numpy array
-        np.save(save_loc, data)
+        # Cast to float32 - this was the original resolution
+        data = data.astype('float32')
 
+        # Save as np array
+        np.save(save_loc, data)
 
     for stub in stubs:
         

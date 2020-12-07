@@ -129,7 +129,7 @@ def main():
                                 flush=True)
 
     # Save ML object
-    ML.Save('../data/Base_consol.ML', low_memory=True)
+    ML.Save('../data/Base_consol2.ML', low_memory=True)
 
 if __name__ == '__main__':
     main()

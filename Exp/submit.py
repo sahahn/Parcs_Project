@@ -42,7 +42,8 @@ def evaluate(args, n_jobs, dask_ip=None):
                               splits=5,
                               n_repeats=1,
                               cv=cv,
-                              only_fold=args['split'])
+                              only_fold=args['split'],
+                              base_dtype='float32')
 
         # Save scores, indicating this job is done
         scores = np.array(results['summary_scores'])
