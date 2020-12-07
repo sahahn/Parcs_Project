@@ -118,6 +118,18 @@ def load_target_names(dr):
 
     return targets
 
+
+def get_stacked_options():
+    
+    parcels = []
+
+    for s in ['100', '200', '300']:
+        for n in ['3', '5']:
+            for r in ['0']:
+                parcels += ['stacked_random_' + s + '_' + n + '_' + r]
+
+    return parcels
+
 def get_choice(dr):
 
     # Parcels
@@ -125,10 +137,7 @@ def get_choice(dr):
     parcels = [p.replace('.npy', '') for p in os.listdir(parcel_dr)]
 
     # Add extra stacking parcels if any to run
-    for s in ['100', '200', '300']:
-        for n in ['3', '5']:
-            for r in ['0']:
-                parcels += ['stacked_random_' + s + '_' + n + '_' + r]
+    parcels += get_stacked_options()
 
     # Load target names
     targets = load_target_names(dr)
