@@ -81,7 +81,7 @@ def proc_yeo(save_dr):
 
 def proc_maps_and_parcs(save_dr):
     
-    for stub in ['economo', 'economo7', 'mesulam', 'oasis.chubs', 'sjh']:
+    for stub in ['economo', 'mesulam', 'oasis.chubs', 'sjh']:
 
         surf = fsaverage_label_to_fs_lr(lh_loc='../raw/maps_and_parcs/lh.' + stub + '.annot',
                                         rh_loc='../raw/maps_and_parcs/rh.' + stub + '.annot')
