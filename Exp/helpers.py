@@ -1,4 +1,5 @@
 import os
+from typing import Type
 import numpy as np
 import pandas as pd
 import time
@@ -7,7 +8,9 @@ import sys
 import shutil
 
 models = ['elastic', 'lgbm', 'svm']
-split_if = ['stacked_random_', 'random_2000_']
+
+split_if = ['stacked_', 'voted_', 'random_2000_', 'grid_',
+            'random_3000_', 'identity', 'icosahedron-1442_']
 
 def clean_cache(dr, scratch_dr):
 
@@ -31,7 +34,12 @@ def clean_cache(dr, scratch_dr):
         if model in models:
 
             # Load the result, have to check if it's actually done
-            result = np.load(os.path.join(results_dr, file))
+            try:
+                result = np.load(os.path.join(results_dr, file))
+            
+            # If error loading in, skip this one
+            except:
+                continue
 
             # If len is 4, then means this is just one repeat
             if len(file.split('---')) == 4:
@@ -56,8 +64,10 @@ def clean_cache(dr, scratch_dr):
         dr = os.path.join(scratch_dr, 'cache' + end)
         if os.path.exists(dr):
             for parc in all_parc_keys:
-
-                if parcs_counts[parc] == total:
+                
+                # If greater than or equal, as adding .2 can lead to
+                # weird floating point things
+                if parcs_counts[parc] >= total:
                     cache_dr = os.path.join(dr, parc)
                     if os.path.exists(cache_dr):
                         print('DELETE:', cache_dr, flush=True)
@@ -85,6 +95,10 @@ def get_done(results_dr):
             done.add(name)
 
             # Then skip rest of loop
+            continue
+        except FileNotFoundError:
+
+            # If file not found, continue w/o adding to done
             continue
 
         # If done add to done
@@ -118,6 +132,27 @@ def load_target_names(dr):
 
     return targets
 
+def get_grid_options():
+
+    parcels = []
+
+    for s in ['100', '200', '300']:
+        for n in ['3', '5']:
+            for r in ['0']:
+                parcels += ['grid_random_' + s + '_' + n + '_' + r]
+
+    return parcels
+
+def get_voted_options():
+    
+    parcels = []
+
+    for s in ['100', '200', '300']:
+        for n in ['3', '5']:
+            for r in ['0']:
+                parcels += ['voted_random_' + s + '_' + n + '_' + r]
+
+    return parcels
 
 def get_stacked_options():
     
@@ -130,14 +165,28 @@ def get_stacked_options():
 
     return parcels
 
-def get_choice(dr):
+def get_choice(dr, parcs='all', only=None):
 
-    # Parcels
-    parcel_dr = os.path.join(dr, 'parcels')
-    parcels = [p.replace('.npy', '') for p in os.listdir(parcel_dr)]
+    # Optional, if pass a list of only, override models
+    if only is not None:
+        model_choices = only
+    else:
+        model_choices = models
 
-    # Add extra stacking parcels if any to run
-    parcels += get_stacked_options()
+    # Cast if passed identity to list
+    if parcs == 'identity':
+        parcels = ['identity']
+
+    else:
+
+        # Parcels
+        parcel_dr = os.path.join(dr, 'parcels')
+        parcels = [p.replace('.npy', '') for p in os.listdir(parcel_dr)]
+
+        # Add extra
+        parcels += get_stacked_options()
+        parcels += get_voted_options()
+        parcels += get_grid_options()
 
     # Load target names
     targets = load_target_names(dr)
@@ -161,7 +210,7 @@ def get_choice(dr):
         else:
             needs_split = False
 
-        for model in models:
+        for model in model_choices:
             for target in targets:
 
                 # If doesn't need split, names are just one
@@ -225,7 +274,7 @@ def unpack_args():
     # Proc split - if int or None
     try:
         args['split'] = int(float(args['split']))
-    except ValueError:
+    except:
         args['split'] = None
 
     # Set n jobs
