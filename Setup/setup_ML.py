@@ -70,14 +70,14 @@ def load_data(ML, show_dist=False):
     df.dropna(inplace=True)
 
     ML.Load_Data_Files(df=df[['myelin', 'thick', 'sulc']],
-                    load_func=np.load,
-                    filter_outlier_std=10,
-                    reduce_func=[np.std])
+                       load_func=np.load,
+                       filter_outlier_std=10,
+                       reduce_func=[np.std])
 
     ML.Load_Data_Files(df=df[['curv']],
-                    load_func=np.load,
-                    filter_outlier_std=10,
-                    reduce_func=[np.min, np.max, np.std])
+                       load_func=np.load,
+                       filter_outlier_std=10,
+                       reduce_func=[np.min, np.max, np.std])
 
     # Save distribution videos
     if show_dist:
@@ -110,7 +110,7 @@ def main():
     ML = load_base(ML, show_dist=True)
 
     # Load the data files, apply different filtering
-    ML = load_data(ML, show_dist=True)
+    ML = load_data(ML, show_dist=False)
 
     # Consolidate the Data Files
     ML.Consolidate_Data_Files('../data/consolidated')
@@ -129,7 +129,7 @@ def main():
                                 flush=True)
 
     # Save ML object
-    ML.Save('../data/Base_consol2.ML', low_memory=True)
+    ML.Save('../data/Base_consol.ML', low_memory=True)
 
 if __name__ == '__main__':
     main()

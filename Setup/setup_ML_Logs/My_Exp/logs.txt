@@ -683,61 +683,6 @@ Dropped 9 rows based on filter input params, e.g. filter outlier percent, drop c
 Dropped 5 rows based on filter input params, e.g. filter outlier percent, drop cat, ect...
 Merged with existing (merge=inner)
 New combined shape: (9441, 4)
-Set to overlapping loaded subjects.
-Plotting data distribution.
-Viewing data with shape: (9432, 4)
-
-Loaded data top columns by skew:
-thick    -0.308872
-myelin    0.392608
-curv      0.709746
-sulc      1.665988
-dtype: float64
-
-Set to overlapping loaded subjects.
-Plotting data distribution.
-Viewing data with shape: (9432, 4)
-
-Loaded data top columns by skew:
-sulc     -1.365171
-thick    -0.308872
-curv     -0.194798
-myelin    0.392608
-dtype: float64
-
-Set to overlapping loaded subjects.
-Plotting data distribution.
-Viewing data with shape: (9432, 4)
-
-Loaded data top columns by skew:
-curv     -9.259318
-myelin    0.000000
-thick     0.000000
-sulc      0.272874
-dtype: float64
-
-Set to overlapping loaded subjects.
-Plotting data distribution.
-Viewing data with shape: (9432, 4)
-
-Loaded data top columns by skew:
-thick    -27.769403
-sulc       0.587648
-myelin     2.454026
-curv       4.883617
-dtype: float64
-
-Set to overlapping loaded subjects.
-Plotting data distribution.
-Viewing data with shape: (9432, 4)
-
-Loaded data top columns by skew:
-sulc     -1.425582
-curv      0.401568
-thick     0.408859
-myelin    2.377613
-dtype: float64
-
 Loading from df or files
 
 Merged with existing (merge=inner)

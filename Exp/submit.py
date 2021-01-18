@@ -16,8 +16,7 @@ def evaluate(args, n_jobs, dask_ip=None):
         os.chmod(args['save_loc'], 0o777) 
 
         # Load the ML object
-        ML = Load('/users/s/a/sahahn/Parcs_Project/data/Base_consol.ML',
-                log_dr=None, notebook=False)
+        ML = Load('../data/Base_consol.ML', log_dr=None, notebook=False)
         ML.n_jobs = n_jobs
         ML.mp_context = 'loky'
 
@@ -29,9 +28,9 @@ def evaluate(args, n_jobs, dask_ip=None):
 
         # Get the pipeline to evaluate
         pipeline = get_pipe(model_str=args['model'],
-                                parcel=args['parcel'],
-                                cv=cv,
-                                dask_ip=dask_ip)
+                            parcel=args['parcel'],
+                            cv=cv,
+                            dask_ip=dask_ip)
 
         # Get the problem spec
         ps = Problem_Spec(target=args['target'])
@@ -51,13 +50,19 @@ def evaluate(args, n_jobs, dask_ip=None):
         os.chmod(args['save_loc'], 0o777) 
 
     except Exception as e:
+        
+        existing = np.load(args['save_loc'])
+        elapsed = str(time.time() - existing[0])
 
         # Append to errors file
         with open('errors.txt', 'a') as f:
-            f.write('Error with: ' + args['name'] + ' ' + repr(e) + '\n')
+            f.write('Error with: ' + args['name'] + ' ')
+            f.write('n_jobs: ' + str(n_jobs) + ' Elapsed: ' + elapsed)
+            f.write('Error msg: ' + repr(e))
+            f.write('\n')
 
         # If not somehow already done by different job
-        if len(np.load(args['save_loc'])) == 1:
+        if len(existing) == 1:
             
             # Delete job started indicator
             os.remove(args['save_loc'])

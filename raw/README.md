@@ -137,7 +137,7 @@ https://github.com/ThomasYeoLab/CBIG/tree/master/stable_projects/brain_parcellat
 ### maps_and_parcs
 
 Five different parcellations, economo, economo7, mesulam, oasis.chubs and shj were downloaded from
-https://github.com/ucam-department-of-psychiatry/maps_and_parcs/Parcellations/FSAverage/
+https://github.com/ucam-department-of-psychiatry/maps_and_parcs/tree/master/Parcellations/FSAverage
 These parcellations are downloaded in fsaverage space seperate for left and right hemispheres.
 
 -------------------
@@ -152,7 +152,7 @@ These parcellations were downloaded in fsaverage space seperate for left and rig
 
 ### neuro_parc
 
-Eight volumetric parcellations were downloaded from https://github.com/neurodata/neuroparc/tree/master/atlases
+Eight volumetric parcellations were downloaded from https://github.com/neurodata/neuroparc/tree/master/atlases/label/Human
 
 These have not been added to the git due to space, but the following files were downloaded:
 

@@ -136,8 +136,8 @@ def get_grid_options():
 
     parcels = []
 
-    for s in ['100', '200', '300']:
-        for n in ['3', '5']:
+    for s in ['100', '200', '300', '50-500', '100-1000']:
+        for n in ['3', '5', '8']:
             for r in ['0']:
                 parcels += ['grid_random_' + s + '_' + n + '_' + r]
 
@@ -147,19 +147,19 @@ def get_voted_options():
     
     parcels = []
 
-    for s in ['100', '200', '300']:
-        for n in ['3', '5']:
+    for s in ['100', '200', '300', '50-500', '100-1000']:
+        for n in ['3', '5', '8']:
             for r in ['0']:
                 parcels += ['voted_random_' + s + '_' + n + '_' + r]
 
     return parcels
 
 def get_stacked_options():
-    
+
     parcels = []
 
-    for s in ['100', '200', '300']:
-        for n in ['3', '5']:
+    for s in ['100', '200', '300', '100-1000']:
+        for n in ['3', '5', '8']:
             for r in ['0']:
                 parcels += ['stacked_random_' + s + '_' + n + '_' + r]
 
@@ -182,6 +182,9 @@ def get_choice(dr, parcs='all', only=None):
         # Parcels
         parcel_dr = os.path.join(dr, 'parcels')
         parcels = [p.replace('.npy', '') for p in os.listdir(parcel_dr)]
+
+        # Temp, just extra
+        parcels = []
 
         # Add extra
         parcels += get_stacked_options()

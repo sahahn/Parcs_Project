@@ -2,7 +2,7 @@
 #SBATCH --partition=bluemoon
 #SBATCH --time=30:00:00
 #SBATCH --mem=16G
-#SBATCH --job-name=clean
+#SBATCH --job-name=16_all_16G
 #SBATCH --output=Job_Logs/%x_%j.out
 #SBATCH --error=Job_Logs/%x_%j.err
 
@@ -17,4 +17,4 @@ source /users/s/a/sahahn/.bashrc
 
 cd ${SLURM_SUBMIT_DIR}
 
-srun python alt_run.py 16
+srun python alt_run.py 16 5
