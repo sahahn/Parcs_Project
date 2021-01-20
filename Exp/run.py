@@ -45,11 +45,20 @@ while submitted < n_submit and trys < max_trys:
         break
     
     # Get parcel size
-    # If stacked... determine differently - NOTE may want to factor in the nested-ness...
+
+    # If stacked... determine differently
     if parcel.startswith('stacked_random'):
         base_parcel_size = int(parcel.split('_')[2])
         n_parcels = int(parcel.split('_')[3])
-        parcel_size = (base_parcel_size * n_parcels) + 100
+
+        # Multiply by 3 to represent the extra inner folds
+        parcel_size = (base_parcel_size * n_parcels) * 3
+
+    # Voting or grid
+    elif parcel.startswith('voted_') or parcel.startswith('grid_'):
+        base_parcel_size = int(parcel.split('_')[2])
+        n_parcels = int(parcel.split('_')[3])
+        parcel_size = base_parcel_size * n_parcels
 
     # Otherwise load
     else:
@@ -64,35 +73,35 @@ while submitted < n_submit and trys < max_trys:
     # Set if needs high memory
     hi_mem = False
 
-    if parcel_size >= 800:
+    if parcel_size >= 900:
         hi_mem = True
 
-    if model in set(['lgbm', 'svm']) and parcel_size >= 500:
+    if model in set(['lgbm', 'svm']) and parcel_size >= 600:
         hi_mem = True
 
     # Set if needs short queue
     short = True
 
-    if parcel_size >= 550:
+    if parcel_size >= 650:
         short = False
 
-    if model == 'svm' and parcel_size >= 350 and is_binary(target):
+    if model == 'svm' and parcel_size >= 450 and is_binary(target):
         short = False
 
-    if model == 'lgbm' and parcel_size < 1000 and not is_binary(target):
+    if model == 'lgbm' and parcel_size < 1100 and not is_binary(target):
         short = True
 
     if model == 'elastic' and parcel_size <= 1000:
         short = True
 
-    if model == 'elastic' and parcel_size <= 1500 and not is_binary(target):
+    if model == 'elastic' and not is_binary(target):
         short = True
 
     # Set extra
     extra = False
 
     # If between 200 and 550 and svm, set extra
-    if parcel_size >= 200 and parcel_size < 550 and model == 'svm':
+    if parcel_size >= 200 and model == 'svm':
         extra = True
 
     if parcel_size >= 500 and model == 'lgbm' and is_binary(target):

@@ -1,14 +1,14 @@
 #!/bin/sh
-#SBATCH --partition=bluemoon
-#SBATCH --time=30:00:00
-#SBATCH --mem-per-cpu=2G
+#SBATCH --partition=short
+#SBATCH --time=3:00:00
+#SBATCH --mem-per-cpu=8G
 #SBATCH --job-name=Setup
 #SBATCH --output=Job_Logs/%x_%j.out
 #SBATCH --error=Job_Logs/%x_%j.err
 
 #SBATCH --nodes=1
 #SBATCH --ntasks-per-node=1 
-#SBATCH --cpus-per-task=1
+#SBATCH --cpus-per-task=4
 
 cd ${SLURM_SUBMIT_DIR}
 mkdir -p Job_Logs

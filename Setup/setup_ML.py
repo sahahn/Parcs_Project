@@ -110,10 +110,10 @@ def main():
     ML = load_base(ML, show_dist=True)
 
     # Load the data files, apply different filtering
-    ML = load_data(ML, show_dist=True)
+    ML = load_data(ML, show_dist=False)
 
     # Consolidate the Data Files
-    ML.Consolidate_Data_Files('../data/consolidated')
+    ML.Consolidate_Data_Files('../data/consolidated', cast_to='float32')
 
     # Set to no test data
     ML.Train_Test_Split(test_size=0)
@@ -129,7 +129,7 @@ def main():
                                 flush=True)
 
     # Save ML object
-    ML.Save('../data/Base_consol2.ML', low_memory=True)
+    ML.Save('../data/Base_consol.ML', low_memory=True)
 
 if __name__ == '__main__':
     main()

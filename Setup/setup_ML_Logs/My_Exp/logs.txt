@@ -449,8 +449,8 @@ Note: 245 subject(s) with NaN not included/shown!
 -- ksads_back_c_mh_sa_p --
                Original_Name  Counts  Frequency
 Internal_Name                                  
-0                        0.0    9925   0.840959
-1                        1.0    1877   0.159041
+0.0                      0.0    9925   0.840959
+1.0                      1.0    1877   0.159041
 
 Note: 73 subject(s) with NaN not included/shown!
 -- lmt_scr_perc_correct --
@@ -580,92 +580,92 @@ kurtosis                                     0.171
 -- asr_scr_thought_r_binary --
                Original_Name  Counts  Frequency
 Internal_Name                                  
-0                      False    9553   0.804463
-1                       True    2322   0.195537
+False                  False    9553   0.804463
+True                    True    2322   0.195537
 
 -- cbcl_scr_syn_aggressive_r_binary --
                Original_Name  Counts  Frequency
 Internal_Name                                  
-0                      False    8784   0.739705
-1                       True    3091   0.260295
+False                  False    8784   0.739705
+True                    True    3091   0.260295
 
 -- prodrom_psych_ss_severity_score_binary --
                Original_Name  Counts  Frequency
 Internal_Name                                  
-0                      False    9509   0.800758
-1                       True    2366   0.199242
+False                  False    9509   0.800758
+True                    True    2366   0.199242
 
 -- sleep_ss_total_p_binary --
                Original_Name  Counts  Frequency
 Internal_Name                                  
-0                      False    6611   0.556716
-1                       True    5264   0.443284
+False                  False    6611   0.556716
+True                    True    5264   0.443284
 
 -- devhx_15_days_incubator_p_binary --
                Original_Name  Counts  Frequency
 Internal_Name                                  
-0                      False   10334   0.870232
-1                       True    1541   0.129768
+False                  False   10334   0.870232
+True                    True    1541   0.129768
 
 -- devhx_18_mnths_breast_fed_p_binary --
                Original_Name  Counts  Frequency
 Internal_Name                                  
-0                      False    8206   0.691032
-1                       True    3669   0.308968
+False                  False    8206   0.691032
+True                    True    3669   0.308968
 
 -- devhx_distress_at_birth_binary --
                Original_Name  Counts  Frequency
 Internal_Name                                  
-0                      False    8684   0.731284
-1                       True    3191   0.268716
+False                  False    8684   0.731284
+True                    True    3191   0.268716
 
 -- devhx_mother_probs_binary --
                Original_Name  Counts  Frequency
 Internal_Name                                  
-0                      False    6879   0.579284
-1                       True    4996   0.420716
+False                  False    6879   0.579284
+True                    True    4996   0.420716
 
 -- devhx_ss_alcohol_avg_p_binary --
                Original_Name  Counts  Frequency
 Internal_Name                                  
-0                      False    9483   0.798568
-1                       True    2392   0.201432
+False                  False    9483   0.798568
+True                    True    2392   0.201432
 
 -- devhx_ss_marijuana_amt_p_binary --
                Original_Name  Counts  Frequency
 Internal_Name                                  
-0                      False   11425   0.962105
-1                       True     450   0.037895
+False                  False   11425   0.962105
+True                    True     450   0.037895
 
 -- screentime_week_p_binary --
                Original_Name  Counts  Frequency
 Internal_Name                                  
-0                      False   10364   0.872758
-1                       True    1511   0.127242
+False                  False   10364   0.872758
+True                    True    1511   0.127242
 
 -- screentime_weekend_p_binary --
                Original_Name  Counts  Frequency
 Internal_Name                                  
-0                      False    9324   0.785179
-1                       True    2551   0.214821
+False                  False    9324   0.785179
+True                    True    2551   0.214821
 
 -- ksads_adhd_composite_binary --
                Original_Name  Counts  Frequency
 Internal_Name                                  
-0                      False    9324   0.785179
-1                       True    2551   0.214821
+False                  False    9324   0.785179
+True                    True    2551   0.214821
 
 -- ksads_bipolar_composite_binary --
                Original_Name  Counts  Frequency
 Internal_Name                                  
-0                      False   10083   0.849095
-1                       True    1792   0.150905
+False                  False   10083   0.849095
+True                    True    1792   0.150905
 
 -- ksads_OCD_composite_binary --
                Original_Name  Counts  Frequency
 Internal_Name                                  
-0                      False   10615   0.893895
-1                       True    1260   0.106105
+False                  False   10615   0.893895
+True                    True    1260   0.106105
 
 
 Loading from df or files
@@ -683,61 +683,6 @@ Dropped 9 rows based on filter input params, e.g. filter outlier percent, drop c
 Dropped 5 rows based on filter input params, e.g. filter outlier percent, drop cat, ect...
 Merged with existing (merge=inner)
 New combined shape: (9441, 4)
-Set to overlapping loaded subjects.
-Plotting data distribution.
-Viewing data with shape: (9432, 4)
-
-Loaded data top columns by skew:
-thick    -0.308872
-myelin    0.392608
-curv      0.709746
-sulc      1.665988
-dtype: float64
-
-Set to overlapping loaded subjects.
-Plotting data distribution.
-Viewing data with shape: (9432, 4)
-
-Loaded data top columns by skew:
-sulc     -1.365171
-thick    -0.308872
-curv     -0.194798
-myelin    0.392608
-dtype: float64
-
-Set to overlapping loaded subjects.
-Plotting data distribution.
-Viewing data with shape: (9432, 4)
-
-Loaded data top columns by skew:
-curv     -9.259318
-myelin    0.000000
-thick     0.000000
-sulc      0.272874
-dtype: float64
-
-Set to overlapping loaded subjects.
-Plotting data distribution.
-Viewing data with shape: (9432, 4)
-
-Loaded data top columns by skew:
-thick    -27.769403
-sulc       0.587648
-myelin     2.454026
-curv       4.883617
-dtype: float64
-
-Set to overlapping loaded subjects.
-Plotting data distribution.
-Viewing data with shape: (9432, 4)
-
-Loaded data top columns by skew:
-sulc     -1.425582
-curv      0.401568
-thick     0.408859
-myelin    2.377613
-dtype: float64
-
 Loading from df or files
 
 Merged with existing (merge=inner)

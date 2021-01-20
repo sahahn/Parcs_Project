@@ -8,7 +8,7 @@ def main():
 
     start_time = time.time()
 
-    ML = Load('/users/s/a/sahahn/Parcs_Project/data/Alt.ML', log_dr=None)
+    ML = Load('../data/Alt.ML', log_dr=None)
     ML.n_jobs = 12
 
     # CV
@@ -55,3 +55,24 @@ def main():
 
 if __name__ == '__main__':
     main()
+
+
+def proc_df(df):
+
+    to_dummy_code = ['gender', 'mri_info_deviceserialnumber', 'race_ethnicity']
+    to_drop = []
+    for col in to_dummy_code:
+        u, counts = np.unique(df[col], return_counts=True)
+        to_drop.append(col + '_' + str(u[np.argmax(counts)]))
+        df = pd.get_dummies(df, columns=to_dummy_code, drop_first=False)
+    df = df.drop(to_drop, axis=1)
+
+
+    df['interview_age'] = (df['interview_age']-df['interview_age'].mean()) / df['interview_age'].std()
+    df['highest_parent_ed'] = (df['highest_parent_ed']-df['highest_parent_ed'].mean()) / df['highest_parent_ed'].std()
+    df['puberty_scale'] = (df['puberty_scale']-df['puberty_scale'].mean()) / df['puberty_scale'].std()
+    
+
+    print(to_drop)
+
+    return df
