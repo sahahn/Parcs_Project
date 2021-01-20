@@ -184,6 +184,9 @@ def get_choice(dr, parcs='all', only=None):
         parcel_dr = os.path.join(dr, 'parcels')
         parcels = [p.replace('.npy', '') for p in os.listdir(parcel_dr)]
 
+        # Temp, just extra
+        parcels = []
+
         # Add extra
         #parcels += get_stacked_options()
         #parcels += get_voted_options()

@@ -70,14 +70,14 @@ def load_data(ML, show_dist=False):
     df.dropna(inplace=True)
 
     ML.Load_Data_Files(df=df[['myelin', 'thick', 'sulc']],
-                    load_func=np.load,
-                    filter_outlier_std=10,
-                    reduce_func=[np.std])
+                       load_func=np.load,
+                       filter_outlier_std=10,
+                       reduce_func=[np.std])
 
     ML.Load_Data_Files(df=df[['curv']],
-                    load_func=np.load,
-                    filter_outlier_std=10,
-                    reduce_func=[np.min, np.max, np.std])
+                       load_func=np.load,
+                       filter_outlier_std=10,
+                       reduce_func=[np.min, np.max, np.std])
 
     # Save distribution videos
     if show_dist:
